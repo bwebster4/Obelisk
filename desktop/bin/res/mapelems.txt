@@ -1,0 +1,32 @@
+mapelems.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Block
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+GrassTile
+  rotate: false
+  xy: 20, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+LightGrassTile
+  rotate: false
+  xy: 38, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+tree
+  rotate: false
+  xy: 56, 2
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
