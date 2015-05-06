@@ -1,15 +1,11 @@
 package com.obelisk.world;
 
-<<<<<<< HEAD
-=======
 import com.badlogic.gdx.graphics.Texture;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.obelisk.InputHandler;
-<<<<<<< HEAD
 import com.obelisk.world.mapelems.Block;
 import com.obelisk.world.mapelems.Stone;
 import com.obelisk.world.items.ItemManager;
@@ -17,14 +13,7 @@ import com.obelisk.world.mapelems.GrassTile;
 import com.obelisk.world.mapelems.LightGrassTile;
 import com.obelisk.world.mapelems.MapElem;
 import com.obelisk.world.mapelems.Tile;
-=======
-import com.obelisk.world.blocks.Block;
-import com.obelisk.world.blocks.Stone;
-import com.obelisk.world.items.ItemManager;
-import com.obelisk.world.tiles.GrassTile;
-import com.obelisk.world.tiles.LightGrassTile;
-import com.obelisk.world.tiles.Tile;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
+
 
 public class Chunk {
 	DiamondSquare diamondsquare;
@@ -36,7 +25,6 @@ public class Chunk {
 	float x, y;
 	float bottomleft, topleft, bottomright, topright;
 	
-<<<<<<< HEAD
 	TextureRegion grasstiletexture;
 	float grassthreshold = 7.8f;
 	TextureRegion lightgrasstiletexture;
@@ -45,16 +33,7 @@ public class Chunk {
 	float stonethreshold = 8.1f;
 	
 	
-=======
-	Texture grasstiletexture;
-	float grassthreshold = 7.8f;
-	Texture lightgrasstiletexture;
-	float lightgrassthreshold = 7.8f;
-	Texture stonewalltexture;
-	TextureRegion stonetexture;
-	float stonethreshold = 8.1f;
-	
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
+
 	Array<Tile> tilearray = new Array<Tile>();
 	Tile[][] tiles = new Tile[Map.CHUNK_SIZE][Map.CHUNK_SIZE];
 	Array<Block> blockarray = new Array<Block>();
@@ -69,18 +48,11 @@ public class Chunk {
 		this.topleft = topleft;
 		this.topright = topright;
 	}
-<<<<<<< HEAD
+
 	public void show(TextureRegion grasstiletexture, TextureRegion lightgrasstiletexture, TextureRegion stonetexture, DiamondSquare diamondsquare, InputHandler input, Map map, ItemManager itemmanager){
 		this.grasstiletexture = grasstiletexture;
 		this.lightgrasstiletexture = lightgrasstiletexture;
 		this.stonetexture = stonetexture;
-=======
-	public void show(Texture grasstiletexture, Texture lightgrasstiletexture, TextureRegion stonetexture, Texture stonewalltexture, DiamondSquare diamondsquare, InputHandler input, Map map, ItemManager itemmanager){
-		this.grasstiletexture = grasstiletexture;
-		this.lightgrasstiletexture = lightgrasstiletexture;
-		this.stonetexture = stonetexture;
-		this.stonewalltexture = stonewalltexture;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		this.input = input;
 		this.map = map;
 		
@@ -105,19 +77,11 @@ public class Chunk {
 	public void render(SpriteBatch batch, Vector3 touchpos, int brightness){
 		for (int i = 0; i < tilearray.size; i++){
 			tile = tilearray.get(i);
-<<<<<<< HEAD
 			tile.render(batch);
 		}
 		for (int i = 0; i < blockarray.size; i++){
 			block = blockarray.get(i);
 			block.render(batch);
-=======
-			tile.render(batch, brightness);
-		}
-		for (int i = 0; i < blockarray.size; i++){
-			block = blockarray.get(i);
-			block.render(batch, touchpos);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 			if (block.getAlive() == false){
 				blockarray.removeIndex(i);
 			}
@@ -139,11 +103,8 @@ public class Chunk {
 	public void drawShader(SpriteBatch batch){
 		for (int i = 0; i < tilearray.size; i++){
 			tile = tilearray.get(i);
-<<<<<<< HEAD
 //			tile.drawShader(batch);
-=======
-			tile.drawShader(batch);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
+
 		}
 	}
 	public Block getBlock(float x, float y){

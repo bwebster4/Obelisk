@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.obelisk;
 
 import com.badlogic.gdx.Game;
@@ -65,174 +64,10 @@ public class GameMain extends Game {
 		running = false;
 	}
 	public void endGame(){
-		planetscreen.pause();
+		//planetscreen.pause();
 		setScreen(startscreen);
 		planetscreen.dispose();
-		
-	}
-	
-	@Override
-	public void resize(int width, int height) {
-		this.WIDTH = width;
-		this.HEIGHT = height;
-		
-		if (setup){
-			planetscreen.resize(width, height);
-			input.resize(width, height);
-		}
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void resume() {
-	}
-	
-	public void startGame(){
-		planetscreen = new WorldMain(this, input, WIDTH, HEIGHT);
-		setScreen(planetscreen);
-		
-		setup = true;
-	}
-	
-	// ====== Game Time Counters
-	
-	static boolean isSec = false;
-	public static boolean isSec(boolean update){
-		if (update){
-			secCounter++;
-			if (secCounter == 60){
-				secCounter = 0;
-				isSec = true;
-			}else
-				isSec = false;
-		}
-		return isSec;
-	}
-	
-	static boolean halfSec = false;
-	public static boolean isHalfSec(boolean update){
-		if (update){
-			halfCounter++;
-			if (halfCounter == 30){
-				halfCounter = 0;
-				halfSec = true;
-			}else
-				halfSec = false;
-		}
-		return halfSec;
-	}
-	
-	// ========== Dice Rolls
-	
-	public static int d4(int count){
-		int n = 0;
-		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 4);
-		}
-		return n;
-	}
-	public static int d6(int count){
-		int n = 0;
-		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 6);
-		}
-		return n;
-	}
-	public static int d8(int count){
-		int n = 0;
-		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 8);
-		}
-		return n;
-	}
-	public static int d12(int count){
-		int n = 0;
-		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 12);
-		}
-		return n;
-	}
-	public static int d20(int count){
-		int n = 0;
-		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 20);
-		}
-		return n;
-	}
-}
-=======
-package com.obelisk;
-
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
-import com.obelisk.startmenu.StartScreen;
-import com.obelisk.world.WorldMain;
-
-public class GameMain extends Game {
-	public WorldMain planetscreen;
-	public StartScreen startscreen;
-	InputHandler input;
-	
-	boolean setup = false;
-	
-	boolean running;
-	static int secCounter = 0, halfCounter = 0;
-	public float WIDTH, HEIGHT;
-	
-	@Override
-	public void create() {		
-		WIDTH = Gdx.graphics.getWidth();
-		HEIGHT = Gdx.graphics.getHeight();
-		
-		input = new InputHandler(WIDTH, HEIGHT);
-		running = true;
-		
-		startscreen = new StartScreen(this, input);
-		setScreen(startscreen);
-	}
-
-	@Override
-	public void dispose() {
-		startscreen.dispose();
-		if (planetscreen != null)
-			planetscreen.dispose();
-		Gdx.app.exit();
-	}
-
-	@Override
-	public void render() {
-		if (!running){
-			dispose();
-		}else{
-			isSec(true);
-			isHalfSec(true);
-			input.update();
-			if (input.isEscPressed){
-				if (getScreen().equals(startscreen)){
-					exit();
-				}else if (getScreen().equals(planetscreen)){
-					if (planetscreen.getPaused())
-						planetscreen.resume();
-					else
-						planetscreen.pause();
-				}
-			}
-			getScreen().render(1);
-			//System.out.println(Gdx.graphics.getFramesPerSecond());
-		}
-	}
-
-	public void exit(){
-		running = false;
-	}
-	public void endGame(){
-		planetscreen.pause();
-		setScreen(startscreen);
-		planetscreen.dispose();
+		planetscreen = null;
 		
 	}
 	
@@ -335,4 +170,3 @@ public class GameMain extends Game {
 		return n;
 	}
 }
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a

@@ -1,23 +1,19 @@
 package com.obelisk.world;
 
 import com.badlogic.gdx.Gdx;
-<<<<<<< HEAD
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-=======
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.obelisk.InputHandler;
-<<<<<<< HEAD
 import com.obelisk.world.mapelems.Block;
 import com.obelisk.world.mapelems.Stone;
 import com.obelisk.world.items.ItemManager;
@@ -35,26 +31,6 @@ public class Map {
 
 	TextureAtlas mapElems;
 	TextureRegion grassTexture, lightGrassTexture, stoneTexture;
-=======
-import com.obelisk.world.blocks.Block;
-import com.obelisk.world.blocks.Stone;
-import com.obelisk.world.items.ItemManager;
-import com.obelisk.world.pathfinding.FloodFill;
-import com.obelisk.world.pathfinding.Node;
-import com.obelisk.world.pathfinding.PathfindingManager;
-import com.obelisk.world.tiles.*;
-
-public class Map {
-
-	Texture blocktextures;
-	Texture grasstiletexture;
-	float grassthreshold = 7.8f;
-	Texture lightgrasstiletexture;
-	float lightgrassthreshold = 7.8f;
-	public static Texture stonewalltexture;
-	TextureRegion stonetexture;
-	float stonethreshold = 20f;//8.1f;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 	
 	Tile tile;
 	Block block;
@@ -63,13 +39,9 @@ public class Map {
 	ItemManager itemmanager;
 	PathfindingManager PM;
 	FloodFill floodfill;
-<<<<<<< HEAD
 	
 	Thread areaGen;
 	boolean isGenerating = true;
-=======
-	Thread areaGen;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 	
 	public static final int CHUNK_SIZE = 16;
 	public static final int WORLD_CHUNKS = 16;
@@ -86,37 +58,17 @@ public class Map {
 	
 	Array<Area> areas = new Array<Area>();
 	
-<<<<<<< HEAD
-	public void show(InputHandler input, DiamondSquare diamondsquare, PathfindingManager PM, float SEED, ItemManager itemmanager, String mapName){
-=======
-	boolean isGenerating = true;
-	
 	public void show(InputHandler input, DiamondSquare diamondsquare, PathfindingManager PM, float SEED, ItemManager itemmanager){
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		this.input = input;
 		this.itemmanager = itemmanager;
 		this.PM = PM;
 		
-<<<<<<< HEAD
 		mapElems = new TextureAtlas("res/mapelems.txt");
 		
 		grassTexture = mapElems.findRegion("GrassTile");
 		lightGrassTexture = mapElems.findRegion("LightGrassTile");
 		stoneTexture = mapElems.findRegion("Block");
 		
-		
-		//====== Loading Map
-//		FileHandle mapFile = Gdx.files.internal(mapName);
-//		String mapText = mapFile.readString();
-=======
-		grasstiletexture = new Texture(Gdx.files.internal("res/GrassTile.png"));
-		grasstiletexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-		lightgrasstiletexture = new Texture(Gdx.files.internal("res/LightGrassTile.png"));
-		lightgrasstiletexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-		blocktextures = new Texture(Gdx.files.internal("res/Blocks.png"));
-		blocktextures.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-		stonetexture = new TextureRegion(blocktextures, 0, 0, 16, 16);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		
 		//====== Generating Land
 		diamondsquare.generateChunkHeights();
@@ -125,19 +77,11 @@ public class Map {
 			for (int y = 0; y < WORLD_CHUNKS; y++){
 				chunkarray.add(new Chunk(x * 1f * CHUNK_SIZE, y * 1f * CHUNK_SIZE, chunkheights[x][y], chunkheights[x][y+1], chunkheights[x+1][y], chunkheights[x+1][y+1]));
 				chunks[x][y] = chunkarray.peek();	
-<<<<<<< HEAD
 				chunks[x][y].show(grassTexture, lightGrassTexture, stoneTexture, diamondsquare, input, this, itemmanager);
 				System.out.println("Chunk " + chunkarray.size + " created");
 			}
 		}
 
-=======
-				chunks[x][y].show(grasstiletexture, lightgrasstiletexture, stonetexture, stonewalltexture, diamondsquare, input, this, itemmanager);
-				System.out.println("Chunk " + chunkarray.size + " created");
-			}
-		}
-		
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		//====== Determining Walkability
 		for (int x = 0; x < WORLD_SIZE; x++){
 			for (int y = 0; y < WORLD_SIZE; y++){
@@ -147,35 +91,11 @@ public class Map {
 					walkable[x][y] = false;
 			}
 		}
-		
-<<<<<<< HEAD
-		PM.show(this);
-		floodfill = PM.getFloodFill();
-		Area area;
-		Tile tile;
-		//====== Area Filling
-		for (int x = 0; x < WORLD_SIZE; x++){
-			for (int y = 0; y < WORLD_SIZE; y++){
-				if (getWalkable(x, y) && getTile(x, y).getArea() == 0){
-					areas.add(new Area(areas.size, PM.getNodes(), this));
-					area = areas.peek();
-					area.setArea(floodfill.FloodWalk4(new Vector3(x, y, 0)));
-					for(int i = 0; i < area.getArea().size; i++){
-						tile = getTile(area.getArea().get(i).getX(), area.getArea().get(i).getY());
-						tile.setArea(area.getID());
-					}
-				}
-			}
-		}
-		
-		areaGen = new Thread(new AreaGenerator(this));
-		areaGen.start();
-=======
+
 		areaGen = new Thread(new AreaGenerator(this));
 		areaGen.start();
 		
 
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 	}
 	public void render(SpriteBatch batch, Vector3 touchpos, Rectangle camrect){
 		time+= 1;
@@ -239,11 +159,7 @@ public class Map {
 		try{
 			return chunks[(int) (x/CHUNK_SIZE)][(int) (y/CHUNK_SIZE)].getTile(x%CHUNK_SIZE, y%CHUNK_SIZE);
 		}catch(Exception e){
-<<<<<<< HEAD
-			Gdx.app.log("Map.java line 205", "Array Index Out of Bounds Exception at tile " + x + ", " + y);
-=======
-			Gdx.app.log("Map.getTile", "Array Index Out of Bounds Exception at tile " + x + ", " + y);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
+			//Gdx.app.log("Map.getTile", "Array Index Out of Bounds Exception at tile " + x + ", " + y);
 			return null;
 		}
 	}
@@ -260,11 +176,8 @@ public class Map {
 		Block block;
 //		switch(id){
 //		case 1:
-<<<<<<< HEAD
 			block = new Stone(x, y, stoneTexture, input, itemmanager);
-=======
-			block = new Stone(x, y, stonetexture, input, itemmanager);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
+
 //		default:
 //			block = null;
 //		}
@@ -280,11 +193,7 @@ public class Map {
 			int addedlight = brightness - distance;
 			if (addedlight < 0)
 				addedlight = 0;
-<<<<<<< HEAD
 //			getTile(node.getX(), node.getY()).addLight(addedlight);
-=======
-			getTile(node.getX(), node.getY()).addLight(addedlight);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		}
 		
 //		Circle circle = new Circle((int) (pos.x) + .5f, (int) (pos.y) + .5f, range);
@@ -312,12 +221,6 @@ public class Map {
 		return isGenerating;
 	}
 	public void addtoArea(float x, float y){
-<<<<<<< HEAD
-=======
-			
-		
-		
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		
 //		if (getTile(x, y - 1) != null && getTile(x, y - 1).getArea() != 0)
 //			getTile(x,y).setArea(getTile(x, y - 1).getArea());
@@ -334,13 +237,8 @@ public class Map {
 	
 	}
 	public void dispose() {
-<<<<<<< HEAD
 		mapElems.dispose();
-=======
-		grasstiletexture.dispose();
-		lightgrasstiletexture.dispose();
-		blocktextures.dispose();
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
+
 	}
 	
 	private class AreaGenerator implements Runnable{
@@ -385,8 +283,3 @@ public class Map {
 	}
 	
 }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a

@@ -1,20 +1,14 @@
 package com.obelisk.world;
 
 import com.badlogic.gdx.Gdx;
-<<<<<<< HEAD
-=======
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
-<<<<<<< HEAD
-=======
-import com.badlogic.gdx.utils.ObjectMap;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 import com.obelisk.GameMain;
 import com.obelisk.world.entities.Player;
 import com.obelisk.world.items.Item;
@@ -26,23 +20,18 @@ public class Ui {
 	float HEIGHT, WIDTH;
 	
 	Stage uistage, pausestage;
-<<<<<<< HEAD
-=======
+
 	TextureAtlas atlas;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 	Table infocorner, chartable, pausemenu, invMenu;
 	VerticalGroup inventory, equipment, equipmentLabels;
 	
 	ScrollPane invPane;
 		
 	Skin uiskin;
-<<<<<<< HEAD
-		
-=======
 	
 	Color textcolor = new Color();//Color.rgb565(120, 68, 33);
 	
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
+
 	TextButton returnbutton, charbutton, blankButton;
 	
 	int phealth = 0;
@@ -56,13 +45,9 @@ public class Ui {
 		this.HEIGHT = HEIGHT;
 		this.WIDTH = WIDTH;
 		this.GM = GM;
-<<<<<<< HEAD
-						
-=======
 		
 		textcolor.set(120f/256, 68f/256, 33f/256, 1);
 				
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		// Ui Stage -------------------------------------------
 		uistage = new Stage();
 		Gdx.input.setInputProcessor(uistage);
@@ -202,12 +187,8 @@ public class Ui {
 			case 0:{
 				if (pItem != null && pItem.getButton() == null){
 					TextButton button = new TextButton(pItem.getName(), uiskin);
-<<<<<<< HEAD
-					Gdx.app.log("Ui.updatePlayerUi", "pItem.getName for case 0: " + pItem.getName());
-					button.addAction(new equipAction(heldButton, pItem));
-=======
+
 					button.addAction(new equipAction(button, pItem));
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 					pItem.setButton(button);
 				}
 				if (pItem != null && heldButton != pItem.getButton()){
@@ -217,10 +198,8 @@ public class Ui {
 					heldButton.setVisible(true);
 					invMenu.invalidate();
 				}else if (pItem == null){
-<<<<<<< HEAD
-=======
+
 					heldButton = blankButton;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 					heldButton.setVisible(false);
 				}
 				break;
@@ -228,16 +207,6 @@ public class Ui {
 			case 1:
 				if (pItem != null && pItem.getButton() == null){
 					TextButton button = new TextButton(pItem.getName(), uiskin);
-<<<<<<< HEAD
-					button.addAction(new equipAction(wornButton, pItem));
-					playerEquip.get(i).setButton(button);
-				}
-				if (pItem != null){
-					wornButton = pItem.getButton();
-					wornButton.setVisible(true);
-				}else{
-					//wornButton.setVisible(false);
-=======
 					button.addAction(new equipAction(button, pItem));
 					playerEquip.get(i).setButton(button);
 				}
@@ -250,23 +219,12 @@ public class Ui {
 				}else if (pItem == null){
 					wornButton = blankButton;
 					wornButton.setVisible(false);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 				}
 				wornButton.invalidate();
 				break;
 			case 2:
 				if (pItem != null && pItem.getButton() == null){
 					TextButton button = new TextButton(pItem.getName(), uiskin);
-<<<<<<< HEAD
-					button.addAction(new equipAction(armorButton, pItem));
-					playerEquip.get(i).setButton(button);
-				}
-				if (pItem != null){
-					armorButton = pItem.getButton();
-					armorButton.setVisible(true);
-				}else{
-					//armorButton.setVisible(false);
-=======
 					button.addAction(new equipAction(button, pItem));
 					playerEquip.get(i).setButton(button);
 				}
@@ -279,23 +237,12 @@ public class Ui {
 				}else if (pItem == null){
 					armorButton = blankButton;
 					armorButton.setVisible(false);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 				}
 				armorButton.invalidate();
 				break;
 			case 3:
 				if (pItem != null && pItem.getButton() == null){
 					TextButton button = new TextButton(pItem.getName(), uiskin);
-<<<<<<< HEAD
-					button.addAction(new equipAction(backButton, pItem));
-					playerEquip.get(i).setButton(button);
-				}
-				if (pItem != null){
-					backButton = pItem.getButton();
-					backButton.setVisible(true);
-				}else{
-					//backButton.setVisible(false);
-=======
 					button.addAction(new equipAction(button, pItem));
 					playerEquip.get(i).setButton(button);
 				}
@@ -308,7 +255,6 @@ public class Ui {
 				}else if (pItem == null){
 					backButton = blankButton;
 					backButton.setVisible(false);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 				}
 				backButton.invalidate();
 				break;
@@ -324,15 +270,7 @@ public class Ui {
 		
 		if (playerInv.size > 0){
 			for (int i = 0; i < playerInv.size; i++){
-<<<<<<< HEAD
-				if (playerInv.get(i) != null && playerInv.get(i).getButton() == null){
-					TextButton button = new TextButton(playerInv.get(i).getName(), uiskin);
-					button.addAction(new equipAction(playerItems.get(i), playerInv.get(i)));
-					playerInv.get(i).setButton(button);
-				}
-				if(playerInv.get(i) != null && playerInv.get(i).getButton().getActions() != playerItems.get(i).getActions()){
-					playerItems.insert(i, playerInv.get(i).getButton());
-=======
+
 				Item item = playerInv.get(i);
 				if (item != null && item.getButton() == null){
 					TextButton button = new TextButton(item.getName(), uiskin);
@@ -344,7 +282,6 @@ public class Ui {
 				}
 				if(item == null){
 					Gdx.app.log("Error:Ui", "playerInv has null item");
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 				}
 			}
 		}
@@ -352,10 +289,7 @@ public class Ui {
 			playerItems.truncate(playerInv.size);
 			inventory.clear();
 			for (int i = 0; i < playerItems.size; i++){
-<<<<<<< HEAD
-=======
 				playerItems.get(i).setVisible(true);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 				inventory.addActor(playerItems.get(i));
 			}
 			inventory.invalidate();
@@ -407,13 +341,9 @@ public class Ui {
 				return false;
 			}else if(!isOpen && button.isPressed() && delay == 0){
 				invMenu.setVisible(true);
-<<<<<<< HEAD
-				invMenu.invalidate();
-				invMenu.setTouchable(Touchable.enabled);
-=======
+
 				invMenu.setTouchable(Touchable.enabled);
 				invMenu.invalidate();
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 				isOpen = true;
 				delay = delayAmt;
 				return false;
@@ -427,32 +357,19 @@ public class Ui {
 
 		Button button;
 		Item item;
-<<<<<<< HEAD
-=======
-		
+
 		int delay = 0;
 		int delayAmt = 30;
 		
 		boolean equipped = false;
 		
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		public equipAction(Button button, Item item){
 			this.button = button;
 			this.item = item;
 		}
 		@Override
 		public boolean act(float delta) {
-<<<<<<< HEAD
-			if (/*item.getEquipSlot() >= 0 &&*/ button.isPressed()){
-				player.unequipItem(item.getEquipSlot());
-				player.equipItem(item, item.getEquipSlot());
-				Gdx.app.log("Ui line 217", "Item equipped");
-				return false;
-			}
-			else{
-				return false;
-			}
-=======
+
 			if (delay > 0)
 				delay--;
 			
@@ -466,7 +383,6 @@ public class Ui {
 				delay = delayAmt;
 			}
 			return false;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		}
 		
 	}

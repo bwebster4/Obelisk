@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit trunk//EN" "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd">
 <module rename-to="html">
@@ -12,3 +13,19 @@
 	
 	<set-configuration-property name="gdx.assetpath" value="../core/assets" />
 </module>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit trunk//EN" "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd">
+<module rename-to="html">
+	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
+
+    <inherits name='GameMain' />
+	<entry-point class='com.obelisk.client.HtmlLauncher' />
+	
+	<add-linker name="xsiframe"/>
+	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
+	<set-configuration-property name="devModeRedirectEnabled" value="true"/>
+	
+	<set-configuration-property name="gdx.assetpath" value="../core/assets" />
+</module>
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a

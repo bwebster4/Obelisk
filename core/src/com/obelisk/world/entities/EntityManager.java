@@ -13,12 +13,8 @@ import com.badlogic.gdx.utils.Array;
 import com.obelisk.GameMain;
 import com.obelisk.InputHandler;
 import com.obelisk.world.WorldMain;
-import com.obelisk.world.items.Ammunition;
 import com.obelisk.world.items.ItemManager;
-import com.obelisk.world.items.KineticPistol;
-import com.obelisk.world.items.KineticSMG;
 import com.obelisk.world.items.Pickaxe;
-import com.obelisk.world.items.StonePiece;
 import com.obelisk.world.pathfinding.Astar;
 import com.obelisk.world.pathfinding.Node;
 import com.obelisk.world.pathfinding.PathfindingManager;
@@ -57,6 +53,7 @@ public class EntityManager {
 		this.collisions = collisions;
 		this.GM = GM;
 		this.input = input;
+		Gdx.app.log("EntityManager", "getAstar() = " + PM.getAstar() + " PM = " + PM); 
 		this.astar = PM.getAstar();
 		
 		character_textures = new Texture(Gdx.files.internal("res/Characters.png"));
@@ -147,19 +144,9 @@ public class EntityManager {
 		loadedentities.add(new Player(x, y, collisions, this, GM, itemmanager));
 		player = (Player) loadedentities.peek();
 		player.show(human_1, input);
-<<<<<<< HEAD
-		player.addItem(new Pickaxe(itemmanager.getTexture("pickaxe"), false, 0, 0, player), true);
-		Pickaxe item = new Pickaxe(itemmanager.getTexture("pickaxe"), false, 0, 0, player);
-		player.addItem(item, true);
-		player.equipItem(item, item.getEquipSlot());
-		player.addItem(new StonePiece(itemmanager.getTexture("pickaxe"), false, 0, 0, player, 5), true);
-		player.addItem(new StonePiece(itemmanager.getTexture("pickaxe"), false, 0, 0, player, 5), true);
 
-		player.addItem(new StonePiece(itemmanager.getTexture("pickaxe"), false, 0, 0, player, 5), true);
-=======
 		Pickaxe item = new Pickaxe(itemmanager.getTexture("pickaxe"), false, 0, 0, player);
 		player.addItem(item, true);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 
 	}
 	public void removeEntity(ActiveEntity entity){

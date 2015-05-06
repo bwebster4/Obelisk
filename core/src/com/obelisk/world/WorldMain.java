@@ -77,7 +77,6 @@ public class WorldMain implements Screen {
 	
 	@Override
 	public void render(float delta) {
-<<<<<<< HEAD
 		switch(state){
 		case LOADING:
 			Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -108,41 +107,7 @@ public class WorldMain implements Screen {
 			stage.act();
 			stage.draw();
 			break;
-=======
 
-		
-		switch(state){
-		// When loading do this --------------------------
-			case LOADING:
-				Gdx.gl.glClearColor(0, 0, 0, 1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				if(!map.isGenerating()){
-					state = RUNNING;	
-				}
-				
-				if(GameMain.isSec(false)){
-					switch(loadCounter){
-					case 1:
-						loading.setText("Loading.");
-						loadCounter = 2;
-						break;
-					
-					case 2:
-						loading.setText("Loading..");
-						loadCounter = 3;
-						break;
-					
-					case 3:
-						loading.setText("Loading...");
-						loadCounter = 1;
-						break;
-					}
-				}
-				
-				stage.act();
-				stage.draw();
-				break;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		// When running do this ---------------------------
 			case RUNNING:{
 			tic++;
@@ -196,19 +161,14 @@ public class WorldMain implements Screen {
 			batch.end();
 			
 			ui.render(state);
-<<<<<<< HEAD
-			
-=======
+
 			break;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 			}
 			// When paused do this --------------------------------
 			case PAUSED:
 			ui.render(state);
-<<<<<<< HEAD
-=======
+
 			break;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 
 	}
 
@@ -227,11 +187,7 @@ public class WorldMain implements Screen {
 	public void show() {
 		
 		created = true;
-<<<<<<< HEAD
-		state = RUNNING;
-=======
 		state = LOADING;
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		
 		// ===== Loading Screen stuff
 		stage = new Stage();
@@ -272,14 +228,11 @@ public class WorldMain implements Screen {
 		
 		map = new Map();
 		PM = new PathfindingManager();
-<<<<<<< HEAD
-		map.show(input, diamondsquare, PM, SEED, itemmanager, null);
-=======
 		map.show(input, diamondsquare, PM, SEED, itemmanager);
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		
 		collisions = new Collisions(map.chunkarray, input, map);
 		
+		PM.show(map);
 		entitymanager = new EntityManager();
 		entitymanager.show(input, collisions, GM, itemmanager, PM);
 	}
@@ -302,19 +255,11 @@ public class WorldMain implements Screen {
 
 	@Override
 	public void pause() {
-<<<<<<< HEAD
 		state = PAUSED;
 		paused = true;
 		shaded = false;
 		Gdx.input.setCursorCatched(false);
-=======
-		if(state == RUNNING){
-			state = PAUSED;
-			paused = true;
-			shaded = false;
-			Gdx.input.setCursorCatched(false);
-		}
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
+
 		
 
 	}
@@ -322,17 +267,10 @@ public class WorldMain implements Screen {
 		return paused;
 	}
 	@Override
-<<<<<<< HEAD
 	public void resume() {	
 		state = RUNNING;
 		paused = false;
-=======
-	public void resume() {
-		if(state == PAUSED){
-			state = RUNNING;
-			paused = false;
-		}
->>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
+
 		//Gdx.input.setCursorCatched(true);
 
 	}

@@ -1,5 +1,6 @@
 package com.obelisk.world.pathfinding;
 
+import com.badlogic.gdx.Gdx;
 import com.obelisk.world.Map;
 
 public class PathfindingManager {
@@ -34,6 +35,7 @@ public class PathfindingManager {
 		return nodes;
 	}
 	public Astar getAstar(){
+		Gdx.app.log("PathfindingManager", "astar = " + astar);
 		return astar;
 	}
 	public FloodFill getFloodFill(){
