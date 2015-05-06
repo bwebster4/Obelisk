@@ -5,6 +5,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+<<<<<<< HEAD
+=======
+import com.badlogic.gdx.utils.ArrayMap;
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 import com.obelisk.world.Map;
 import com.obelisk.world.items.Item;
 import com.obelisk.world.items.ItemManager;
@@ -23,7 +27,11 @@ public abstract class Character extends ActiveEntity{
 	static final int hunting = 2;
 	static final int moving = 1;
 	
+<<<<<<< HEAD
 	//====== Substates
+=======
+	//====== SubStates
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 	static final int repositioning = 1;
 	static final int firing = 2;
 	
@@ -38,6 +46,11 @@ public abstract class Character extends ActiveEntity{
 	
 	Character target;
 	
+<<<<<<< HEAD
+=======
+	ProfessionChart profChart;
+	
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 	Array<Item> inventory = new Array<Item>();
 	Array<Item> equipped = new Array<Item>();
 	/*
@@ -60,6 +73,12 @@ public abstract class Character extends ActiveEntity{
 		equipped.insert(2, null);
 		equipped.insert(3, null);
 		
+<<<<<<< HEAD
+=======
+		//profChart = new ProfessionChart(this);
+		//profChart.addLevel("Miner");
+		
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		tar_pos = new Vector3();
 		next_pos = new Vector3();
 		tar_pos.set(x, y, 0);
@@ -259,13 +278,24 @@ public abstract class Character extends ActiveEntity{
 //	}
 	
 	public void equipItem(Item item, int pos){
+<<<<<<< HEAD
+=======
+		unequipItem(pos);
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		inventory.removeValue(item, true);
 		equipped.insert(pos, item);
 	}
 	public void unequipItem(int pos){
 		Item item = equipped.get(pos);
+<<<<<<< HEAD
 		equipped.removeIndex(pos);
 		inventory.add(item);
+=======
+		if(item != null){
+			equipped.removeIndex(pos);
+			inventory.add(item);
+		}
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 	}
 	public void dropItem(Item item, float x, float y){
 		if (inventory.contains(item, true)){
@@ -293,7 +323,11 @@ public abstract class Character extends ActiveEntity{
 
 	private class Animations{
 		int counter = 0;
+<<<<<<< HEAD
 		int changetime = 15;
+=======
+		int changetime = 13;
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 		boolean isWalking = false;
 		
 		public void Walking(boolean isWalking){

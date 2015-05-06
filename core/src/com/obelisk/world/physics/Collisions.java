@@ -1,13 +1,24 @@
 package com.obelisk.world.physics;
 
+<<<<<<< HEAD
+=======
+import com.badlogic.gdx.math.Rectangle;
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.obelisk.InputHandler;
 import com.obelisk.world.Chunk;
 import com.obelisk.world.Map;
 import com.obelisk.world.WorldMain;
+<<<<<<< HEAD
 import com.obelisk.world.mapelems.Block;
 import com.obelisk.world.entities.ActiveEntity;
+=======
+import com.obelisk.world.blocks.Block;
+import com.obelisk.world.entities.ActiveEntity;
+import com.obelisk.world.entities.EntityManager;
+import com.obelisk.world.entities.Projectile;
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 
 public class Collisions {
 	Array<Chunk> chunkarray;

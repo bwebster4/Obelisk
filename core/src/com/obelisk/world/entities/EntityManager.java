@@ -147,6 +147,7 @@ public class EntityManager {
 		loadedentities.add(new Player(x, y, collisions, this, GM, itemmanager));
 		player = (Player) loadedentities.peek();
 		player.show(human_1, input);
+<<<<<<< HEAD
 		player.addItem(new Pickaxe(itemmanager.getTexture("pickaxe"), false, 0, 0, player), true);
 		Pickaxe item = new Pickaxe(itemmanager.getTexture("pickaxe"), false, 0, 0, player);
 		player.addItem(item, true);
@@ -155,6 +156,10 @@ public class EntityManager {
 		player.addItem(new StonePiece(itemmanager.getTexture("pickaxe"), false, 0, 0, player, 5), true);
 
 		player.addItem(new StonePiece(itemmanager.getTexture("pickaxe"), false, 0, 0, player, 5), true);
+=======
+		Pickaxe item = new Pickaxe(itemmanager.getTexture("pickaxe"), false, 0, 0, player);
+		player.addItem(item, true);
+>>>>>>> ea8d177d0598fce92b5a9bc7afe990a287bf430a
 
 	}
 	public void removeEntity(ActiveEntity entity){
