@@ -35,7 +35,6 @@ public class PathfindingManager {
 		return nodes;
 	}
 	public Astar getAstar(){
-		Gdx.app.log("PathfindingManager", "astar = " + astar);
 		return astar;
 	}
 	public FloodFill getFloodFill(){

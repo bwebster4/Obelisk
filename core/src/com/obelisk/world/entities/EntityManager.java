@@ -23,7 +23,6 @@ import com.obelisk.world.physics.Collisions;
 public class EntityManager {
 	
 	Player player;
-	Biot biot;
 	
 	InputHandler input;
 	ItemManager itemmanager;
@@ -41,7 +40,7 @@ public class EntityManager {
 	Array<Sprite> testpathsprites = new Array<Sprite>();
 	
 	Texture character_textures;
-	TextureRegion human_1, biot_1;
+	TextureRegion human_1;
 	
 	int biot_freq = 1800;
 	int wave = 0;
@@ -53,14 +52,12 @@ public class EntityManager {
 		this.collisions = collisions;
 		this.GM = GM;
 		this.input = input;
-		Gdx.app.log("EntityManager", "getAstar() = " + PM.getAstar() + " PM = " + PM); 
 		this.astar = PM.getAstar();
 		
 		character_textures = new Texture(Gdx.files.internal("res/Characters.png"));
 		character_textures.setFilter(TextureFilter.Linear, TextureFilter.Nearest);
 		
 		human_1 = new TextureRegion(character_textures, 0, 0, 64, 256);
-//		biot_1 = new TextureRegion(character_textures, 64, 0, 32, 128);
 		
 		Vector3 startpos = new Vector3(128, 128, 0);
 		while (!WorldMain.map.getWalkable(startpos.x, startpos.y)){
@@ -69,12 +66,9 @@ public class EntityManager {
 		addPlayer(startpos.x, startpos.y);
 		
 		
-//		addEntity(startpos.x + 5f, startpos.y + 5f);
-//		addEntity(startpos.x - 5f, startpos.y + 30f);
-//		
-//		biot = (Biot) loadedentities.peek();
-		
-//		testpath = findPath(player.pos, loadedentities.peek().pos);
+		addEntity(startpos.x + 5f, startpos.y + 5f);
+		addEntity(startpos.x - 5f, startpos.y + 30f);
+
 	}
 	public void render(SpriteBatch batch, float angle, Rectangle camrect){
 		//if (camrect.contains(player.pos.x, player.pos.y))
@@ -141,7 +135,7 @@ public class EntityManager {
 		projectiles.removeValue(projectile, false);
 	}
 	public void addPlayer(float x, float y){
-		loadedentities.add(new Player(x, y, collisions, this, GM, itemmanager));
+		loadedentities.add(new Player(x, y, this, GM, itemmanager));
 		player = (Player) loadedentities.peek();
 		player.show(human_1, input);
 
@@ -160,9 +154,9 @@ public class EntityManager {
 			x += MathUtils.random(-3f, 3f);
 			y += MathUtils.random(-3f, 3f);
 		}
-		loadedentities.add(new Biot(x, y, itemmanager, this, collisions));
-		Biot biot = (Biot) loadedentities.peek();
-		biot.show(biot_1);
+		loadedentities.add(new Golem(x, y, itemmanager, this));
+		Golem biot = (Golem) loadedentities.peek();
+		biot.show(human_1);
 	}
 	public Array<Node> findPath(Vector3 start_pos, Vector3 end_pos){
 		return astar.findPath(start_pos, end_pos);

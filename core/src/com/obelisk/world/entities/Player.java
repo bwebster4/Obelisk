@@ -23,52 +23,28 @@ public class Player extends Character{
 	Item item;
 	
 	InputHandler input;
-	static float MAX_SPEED = 2.5f;
-	int health;
-	int str, dex, con, apt, wis, cha;
-	int mstr, mdex, mcon, mapt, mwis, mcha;
-	
-	TextureRegion blank;
+//	TextureRegion blank;
 	
 	String faction = "player";
 
-	public Player(float x, float y, Collisions collisions, EntityManager entitymanager, GameMain GM, ItemManager itemmanager) {
-		super(x, y, itemmanager, entitymanager, collisions);
+	public Player(float x, float y, EntityManager entitymanager, GameMain GM, ItemManager itemmanager) {
+		super(x, y, itemmanager, entitymanager);
 		
 		this.GM = GM;
 		ui = GM.planetscreen.ui;
 	}
 	
 	public void show(TextureRegion t, InputHandler input){
-		vel = new Vector3(0f, 0f, 0);
-		next_pos = new Vector3();
-		des_vel = new Vector3();
-		itempos = new Vector3(pos);
-		path = null;
+		super.show();
 		
-		str = GameMain.d6(3);
-		dex = GameMain.d6(3);
-		con = GameMain.d6(3);
-		apt = GameMain.d6(3);
-		wis = GameMain.d6(3);
-		cha = GameMain.d6(3);
-
-		mstr = setMod(str);
-		mdex = setMod(dex);
-		mcon = setMod(con);
-		mapt = setMod(apt);
-		mwis = setMod(wis);
-		mcha = setMod(cha);
-		
-		health = 8 + mcon;
 		ui.updatePlayerUi(health, inventory, equipped, this);
 		
 		Gdx.app.log("Scores", str + " " + dex + " " + con + " " + apt + " " + wis + " " + cha + " " + health);
 		
 		setupTextures(t);
 		
-		Texture blanktexture = new Texture(Gdx.files.internal("res/BlankItem.png"));
-		blank = new TextureRegion(blanktexture, 0, 0, 64, 64);
+//		Texture blanktexture = new Texture(Gdx.files.internal("res/BlankItem.png"));
+//		blank = new TextureRegion(blanktexture, 0, 0, 64, 64);
 		
 		body = new Sprite(t_still);
 		body.setSize(.9f, .9f * body.getHeight() / body.getWidth());
@@ -153,6 +129,7 @@ public class Player extends Character{
 				path = findPath(pos, WorldMain.touchpos);
 				next_pos.set(path.peek().getX() + body.getOriginX(), path.peek().getY() + body.getOriginY(), 0);
 				superstate = moving;
+				atdest = false;
 			}
 		}
 		// ====== End Input

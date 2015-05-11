@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
+import com.obelisk.GameMain;
 import com.obelisk.world.Map;
 import com.obelisk.world.items.Item;
 import com.obelisk.world.items.ItemManager;
@@ -26,7 +27,7 @@ public abstract class Character extends ActiveEntity{
 	
 	//====== SubStates
 	static final int repositioning = 1;
-	static final int firing = 2;
+	static final int attacking = 2;
 	
 	boolean atdest = false;
 	
@@ -38,6 +39,9 @@ public abstract class Character extends ActiveEntity{
 	int pathcounter = MathUtils.random(0, 2);
 	
 	Character target;
+	protected int health;
+	protected int str, dex, con, apt, wis, cha;
+	protected int mstr, mdex, mcon, mapt, mwis, mcha;
 	
 	ProfessionChart profChart;
 	
@@ -53,8 +57,8 @@ public abstract class Character extends ActiveEntity{
 //	ArrayMap<Item, Integer> equippeditems = new ArrayMap<Item, Integer>(true, 4);
 	ItemManager itemmanager;
 	
-	public Character(float x, float y, ItemManager itemmanager, EntityManager entitymanager, Collisions collisions) {
-		super(x, y, entitymanager, collisions);
+	public Character(float x, float y, ItemManager itemmanager, EntityManager entitymanager) {
+		super(x, y, entitymanager);
 		
 		this.itemmanager = itemmanager;
 
@@ -72,6 +76,31 @@ public abstract class Character extends ActiveEntity{
 		
 		anim = new Animations();
 	}
+	
+	public void show(){
+		vel = new Vector3(0f, 0f, 0);
+		next_pos = new Vector3();
+		des_vel = new Vector3();
+		itempos = new Vector3(pos);
+		path = null;
+		
+		str = GameMain.d6(3);
+		dex = GameMain.d6(3);
+		con = GameMain.d6(3);
+		apt = GameMain.d6(3);
+		wis = GameMain.d6(3);
+		cha = GameMain.d6(3);
+
+		mstr = setMod(str);
+		mdex = setMod(dex);
+		mcon = setMod(con);
+		mapt = setMod(apt);
+		mwis = setMod(wis);
+		mcha = setMod(cha);
+		
+		health = 8 + mcon;
+	}
+	
 	public void destroy(){
 		for (int i = 0; i < equipped.size; i++){
 			if (equipped.get(i) != null)
@@ -88,24 +117,28 @@ public abstract class Character extends ActiveEntity{
 	}
 	
 	public void move(ActiveEntity entity){
-		speed = Biot.MAX_SPEED * Gdx.graphics.getDeltaTime();
+		speed = Golem.MAX_SPEED * Gdx.graphics.getDeltaTime();
 		
 		if (pos.x <= next_pos.x + speed && pos.x >= next_pos.x - speed && pos.y <= next_pos.y + speed && pos.y >= next_pos.y){
 			if (path.size > 1){
 				path.removeIndex(path.size - 1);
 				next_pos.set(path.peek().getX() + body.getOriginX(), path.peek().getY() + body.getOriginY(), 0);
+	
 			}else{
 				atdest = true;
 				path = null;
+				return;
 			}
 		}
+		
 		
 		vel.set(next_pos.cpy().sub(pos).nor().scl(speed));
 //		force = des_vel.sub(vel);
 //		acc = force.scl(100 / Biot.MASS);
 //		vel.add(acc);
 //		vel.limit(speed);
-		if (vel.len() > .02f)
+		
+		if (vel.len() > .01f)
 			rotation = MathUtils.radiansToDegrees * MathUtils.atan2(vel.y, vel.x);
 
 		pos.add(vel);
@@ -125,7 +158,7 @@ public abstract class Character extends ActiveEntity{
 		if (!atdest){
 			substate = repositioning;
 		}else if (atdest){
-			substate = firing;
+			substate = attacking;
 		}else{
 			substate = idle;
 		}
@@ -182,9 +215,11 @@ public abstract class Character extends ActiveEntity{
 					pathcounter--;
 				move(this);
 				break;
-			case firing:
+			case attacking:
 				pathcounter = 0;
 				rotation = (float) (MathUtils.radiansToDegrees * Math.atan2(tar_pos.y, tar_pos.x));
+				if(pos.dst2(target.pos) > 1)
+					atdest = false;
 				//helditem.use();
 				break;
 		}
@@ -209,8 +244,15 @@ public abstract class Character extends ActiveEntity{
 		while (rotation > 360)
 			rotation -=360;
 		
-		if (vel.len() > 0.01f){
+		if (superstate == moving){
 			anim.Walking(true);
+		}else if (superstate == hunting){
+			if(substate == repositioning)
+				anim.Walking(true);
+			else if(substate == attacking)
+				anim.Still();
+			else
+				anim.Still();
 		}else
 			anim.Still();
 		

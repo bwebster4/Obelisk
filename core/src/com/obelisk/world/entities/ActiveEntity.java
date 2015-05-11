@@ -12,15 +12,13 @@ public abstract class ActiveEntity {
 
 	public Vector3 pos, vel, itempos, des_vel, next_pos, tar_pos, acc, ahead, ahead2, avoid;
 	public float width, height, rotation;
-	static Collisions collisions;
-	static EntityManager entitymanager;
+	EntityManager entitymanager;
 	
 	Sprite body;
 	
-	public ActiveEntity(float x, float y, EntityManager entitymanager, Collisions collisions){
+	public ActiveEntity(float x, float y, EntityManager entitymanager){
 		pos = new Vector3(x, y, 0);
-		ActiveEntity.entitymanager = entitymanager;
-		ActiveEntity.collisions = collisions;
+		this.entitymanager = entitymanager;
 	}
 	abstract public void render(SpriteBatch batch);
 	abstract void updatesize();

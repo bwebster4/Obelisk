@@ -7,8 +7,8 @@ public class LightKinetic extends Projectile {
 
 	float speed = 30f;
 	
-	public LightKinetic(float x, float y, ItemManager itemmanager, float angle, String faction, float damage) {
-		super(x, y, itemmanager, angle, faction, damage);
+	public LightKinetic(float x, float y, EntityManager entitymanager, ItemManager itemmanager, float angle, String faction, float damage) {
+		super(x, y, entitymanager, itemmanager, angle, faction, damage);
 		
 		show(itemmanager.getTexture("lightkinetic"));
 	}

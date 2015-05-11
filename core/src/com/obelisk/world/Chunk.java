@@ -1,6 +1,5 @@
 package com.obelisk.world;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -11,7 +10,6 @@ import com.obelisk.world.mapelems.Stone;
 import com.obelisk.world.items.ItemManager;
 import com.obelisk.world.mapelems.GrassTile;
 import com.obelisk.world.mapelems.LightGrassTile;
-import com.obelisk.world.mapelems.MapElem;
 import com.obelisk.world.mapelems.Tile;
 
 

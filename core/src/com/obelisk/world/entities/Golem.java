@@ -8,44 +8,37 @@ import com.obelisk.InputHandler;
 import com.obelisk.world.items.ItemManager;
 import com.obelisk.world.physics.Collisions;
 
-public class Biot extends Character{
+public class Golem extends Character{
 	
 	InputHandler input;
-	public static float MAX_SPEED = 2f, MAX_FORCE = 100f, MASS = 50f;
-	float turnspeed = 3f;
-	int health = 100;
-	boolean colliding = false;
-	int pistol_experience_lvl = 1;
+	
+	static float MAX_SPEED = 2f;
 	
 	float range;
 	int miningcounter;
 	
-	String faction = "BRI";
+	String faction = "Obelisk";
 
-	public Biot(float x, float y, ItemManager itemmanager, EntityManager entitymanager, Collisions collisions) {
-		super(x, y, itemmanager, entitymanager, collisions);
+	public Golem(float x, float y, ItemManager itemmanager, EntityManager entitymanager) {
+		super(x, y, itemmanager, entitymanager);
 
 	}
 
 	public void show(TextureRegion t){
-		vel = new Vector3();
-		des_vel = new Vector3();
-		itempos = new Vector3(pos);
-		ahead = new Vector3();
-		ahead2 = new Vector3();
-		avoid = new Vector3();
-		range = 4f;
+		super.show();
 //
 //		tf = new TextureRegion(t, 0, 0, 32, 64);
 //		tb = new TextureRegion(t, 0, 64, 32, 64);
 //		tr = new TextureRegion(t, 0, 128, 32, 64);
 //		tl = new TextureRegion(t, 0, 192, 32, 64);
 
+		setupTextures(t);
+		
 		target = entitymanager.player;
 		superstate = hunting;
 		
 		body = new Sprite(t_still);
-		body.setSize(.45f, .45f * body.getHeight() / body.getWidth());
+		body.setSize(.9f, .9f * body.getHeight() / body.getWidth());
 		body.setOrigin(body.getX() + body.getWidth() / 2, body.getY() + body.getHeight() / 2);
 	}
 	

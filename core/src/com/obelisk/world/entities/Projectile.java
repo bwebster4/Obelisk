@@ -22,8 +22,8 @@ public abstract class Projectile extends ActiveEntity{
 	
 	String faction;
 	
-	public Projectile(float x, float y, ItemManager itemmanager, float angle, String faction, float damage) {
-		super(x, y, entitymanager, collisions);
+	public Projectile(float x, float y, EntityManager entitymanager, ItemManager itemmanager, float angle, String faction, float damage) {
+		super(x, y, entitymanager);
 		
 		this.damage = damage;
 		this.angle = angle;
