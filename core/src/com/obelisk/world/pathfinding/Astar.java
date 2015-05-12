@@ -21,7 +21,11 @@ public class Astar {
 		this.nodes = nodes;
 	}
 
-	
+	public boolean canPath(Vector3 startPos, Vector3 endPos){
+		if (!map.getWalkable(endPos.x, endPos.y) || map.getTile(endPos.x, endPos.y).getArea() != map.getTile(startPos.x	, startPos.y).getArea())
+			return false;
+		return true;
+	}
 	public Array<Node> findPath(Vector3 startpos, Vector3 endpos){
 		
 		Array<Node> path = new Array<Node>();
@@ -47,7 +51,7 @@ public class Astar {
 		startnode.setF(0);
 		startnode.setParent(null);
 		
-		int iteration = 0;
+//		int iteration = 0;
 		while (!open.isEmpty() && !open.peek().equals(endnode)){
 			Node current = open.poll();
 			closed.add(current);
@@ -74,7 +78,7 @@ public class Astar {
 								neighbor.setF(neighbor.getG() + getHeuristic(current.getPos(), endnode.getPos()));
 								open.add(neighbor);
 							}
-							iteration++;
+//							iteration++;
 						}
 					}
 				}
@@ -84,7 +88,6 @@ public class Astar {
 		Node node = open.poll();
 		path = buildPath(node);
 		open.clear();
-//		System.out.println(iteration + " " + path.size);
 		return path;		
 	}
 	
@@ -100,6 +103,8 @@ public class Astar {
 			next = path.peek().getParent();
 		}
 		
+		if(pathnodes > 2)
+			path.pop();
 //		System.out.println("PathNodes: " + pathnodes);
 		return path;
 		

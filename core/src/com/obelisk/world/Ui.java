@@ -173,6 +173,9 @@ public class Ui {
 	
 	public void updatePlayerUi(int health, Array<Item> inv, Array<Item> equip, Player player){
 		this.player = player;
+		updatePlayerUi(health, inv, equip);
+	}	
+	public void updatePlayerUi(int health, Array<Item> inv, Array<Item> equip){
 		if (phealth != health)
 			needhup = true;
 		else

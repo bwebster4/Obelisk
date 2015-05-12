@@ -1,11 +1,9 @@
 package com.obelisk.world.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.obelisk.GameMain;
 import com.obelisk.InputHandler;
@@ -14,7 +12,6 @@ import com.obelisk.world.WorldMain;
 import com.obelisk.world.items.Item;
 import com.obelisk.world.items.ItemManager;
 import com.obelisk.world.pathfinding.Node;
-import com.obelisk.world.physics.Collisions;
 
 public class Player extends Character{
 
@@ -47,8 +44,8 @@ public class Player extends Character{
 //		blank = new TextureRegion(blanktexture, 0, 0, 64, 64);
 		
 		body = new Sprite(t_still);
-		body.setSize(.9f, .9f * body.getHeight() / body.getWidth());
-		body.setOrigin(body.getX() + body.getWidth() / 2, body.getY() + body.getHeight() / 2);
+		body.setSize(medium, medium * body.getHeight() / body.getWidth());
+		body.setOrigin(/*body.getX() + */body.getWidth() / 2,/* body.getY() + */body.getHeight() / 2);
 		
 		superstate = idle;
 		
@@ -127,7 +124,7 @@ public class Player extends Character{
 			}
 			if (!actionperformed){
 				path = findPath(pos, WorldMain.touchpos);
-				next_pos.set(path.peek().getX() + body.getOriginX(), path.peek().getY() + body.getOriginY(), 0);
+				nextPos.set(path.peek().getX() + body.getOriginX(), path.peek().getY() + body.getOriginY(), 0);
 				superstate = moving;
 				atdest = false;
 			}
@@ -154,7 +151,7 @@ public class Player extends Character{
 		
 		updatesprite();
 		body.draw(batch);	
-		ui.updatePlayerUi(health, inventory, equipped, this);
+		ui.updatePlayerUi(health, inventory, equipped);
 		
 		// ====== Items
 		

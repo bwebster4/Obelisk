@@ -158,8 +158,11 @@ public class EntityManager {
 		Golem biot = (Golem) loadedentities.peek();
 		biot.show(human_1);
 	}
-	public Array<Node> findPath(Vector3 start_pos, Vector3 end_pos){
-		return astar.findPath(start_pos, end_pos);
+	public Array<Node> findPath(Vector3 startPos, Vector3 endPos){
+		return astar.findPath(startPos, endPos);
+	}
+	public boolean canPath(Vector3 startPos, Vector3 endPos){
+		return astar.canPath(startPos, endPos);
 	}
 	public float getplayerX(){
 		return player.pos.x + player.width / 2;

@@ -6,11 +6,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.obelisk.world.pathfinding.Node;
-import com.obelisk.world.physics.Collisions;
 
 public abstract class ActiveEntity {
 
-	public Vector3 pos, vel, itempos, des_vel, next_pos, tar_pos, acc, ahead, ahead2, avoid;
+	static final float large = 1.95f, medium = .95f, small = .45f;
+	
+	public Vector3 pos, vel, itempos, desVel, nextPos, tarPos, acc, ahead, ahead2, avoid;
 	public float width, height, rotation;
 	EntityManager entitymanager;
 	
@@ -32,5 +33,9 @@ public abstract class ActiveEntity {
 	public Array<Node> findPath(Vector3 start_pos, Vector3 end_pos){
 		Array<Node> path = entitymanager.findPath(start_pos, end_pos);
 		return path;
+	}
+	public boolean canPath(Vector3 startPos, Vector3 endPos){
+		return entitymanager.canPath(startPos, endPos);
+		
 	}
 }

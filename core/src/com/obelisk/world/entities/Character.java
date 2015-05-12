@@ -5,13 +5,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ArrayMap;
 import com.obelisk.GameMain;
 import com.obelisk.world.Map;
 import com.obelisk.world.items.Item;
 import com.obelisk.world.items.ItemManager;
 import com.obelisk.world.pathfinding.Node;
-import com.obelisk.world.physics.Collisions;
 
 public abstract class Character extends ActiveEntity{
 
@@ -26,8 +24,9 @@ public abstract class Character extends ActiveEntity{
 	static final int moving = 1;
 	
 	//====== SubStates
-	static final int repositioning = 1;
-	static final int attacking = 2;
+		//===for Hunting
+		static final int repositioning = 1;
+		static final int attacking = 2;
 	
 	boolean atdest = false;
 	
@@ -70,17 +69,17 @@ public abstract class Character extends ActiveEntity{
 		//profChart = new ProfessionChart(this);
 		//profChart.addLevel("Miner");
 		
-		tar_pos = new Vector3();
-		next_pos = new Vector3();
-		tar_pos.set(x, y, 0);
+		tarPos = new Vector3();
+		nextPos = new Vector3();
+		tarPos.set(x, y, 0);
 		
 		anim = new Animations();
 	}
 	
 	public void show(){
 		vel = new Vector3(0f, 0f, 0);
-		next_pos = new Vector3();
-		des_vel = new Vector3();
+		nextPos = new Vector3();
+		desVel = new Vector3();
 		itempos = new Vector3(pos);
 		path = null;
 		
@@ -119,10 +118,10 @@ public abstract class Character extends ActiveEntity{
 	public void move(ActiveEntity entity){
 		speed = Golem.MAX_SPEED * Gdx.graphics.getDeltaTime();
 		
-		if (pos.x <= next_pos.x + speed && pos.x >= next_pos.x - speed && pos.y <= next_pos.y + speed && pos.y >= next_pos.y){
+		if (pos.x <= nextPos.x + speed && pos.x >= nextPos.x - speed && pos.y <= nextPos.y + speed && pos.y >= nextPos.y){
 			if (path.size > 1){
 				path.removeIndex(path.size - 1);
-				next_pos.set(path.peek().getX() + body.getOriginX(), path.peek().getY() + body.getOriginY(), 0);
+				nextPos.set(path.peek().getX() + body.getOriginX(), path.peek().getY() + body.getOriginY(), 0);
 	
 			}else{
 				atdest = true;
@@ -132,7 +131,7 @@ public abstract class Character extends ActiveEntity{
 		}
 		
 		
-		vel.set(next_pos.cpy().sub(pos).nor().scl(speed));
+		vel.set(nextPos.cpy().sub(pos).nor().scl(speed));
 //		force = des_vel.sub(vel);
 //		acc = force.scl(100 / Biot.MASS);
 //		vel.add(acc);
@@ -154,7 +153,7 @@ public abstract class Character extends ActiveEntity{
 	}
 	
 	public void hunt(){
-		tar_pos.set(target.getPos());
+		tarPos.set(target.getPos());
 		if (!atdest){
 			substate = repositioning;
 		}else if (atdest){
@@ -169,55 +168,56 @@ public abstract class Character extends ActiveEntity{
 				break;
 			case repositioning:
 				if (pathcounter == 0){
-					Vector3 des_pos = tar_pos;
+					Vector3 desPos;
 					float toler = .75f;
 					int range = 5;
-					float slope = (tar_pos.y - pos.y) / (tar_pos.x - pos.x);
-					if (tar_pos.x < pos.x + range && tar_pos.x > pos.x - range && tar_pos.y < pos.y)
-//						direction = 1;
-						des_pos.y += 1;
-					else if (slope > toler && tar_pos.x < pos.x + toler){
-//						direction = 2;
-						des_pos.x += 1;
-						des_pos.y += 1;
-					}
-					else if (slope < toler && slope > -toler && tar_pos.x < pos.x)
-//						direction = 3;
-						des_pos.x += 1;
-					else if (slope < -toler && tar_pos.x < pos.x + toler){
-//						direction = 4;
-						des_pos.x += 1;
-						des_pos.y -= 1;
-					}
-					if (tar_pos.x < pos.x + range && tar_pos.x > pos.x - range && tar_pos.y > pos.y)
-//						direction = 5;
-						des_pos.y -= 1;
-					else if (slope > toler && tar_pos.x > pos.x + toler){
-//						direction = 6;
-						des_pos.x -= 1;
-						des_pos.y -= 1;
-					}
-					else if (slope < toler && slope > -toler && tar_pos.x > pos.x)
-//						direction = 7;
-						des_pos.x -= 1;
-					else if (slope < -toler && tar_pos.x > pos.x + toler){
-//						direction = 8;
-						des_pos.x -= 1;
-						des_pos.y += 1;
-					}
-					path = findPath(pos, des_pos);
+					float slope = (tarPos.y - pos.y) / (tarPos.x - pos.x);
+					int direction = 0;
+					do{
+						desPos = tarPos.cpy();
+						if (direction == 8 || direction == 0 && tarPos.x < pos.x + range && tarPos.x > pos.x - range && tarPos.y < pos.y){
+							direction = 1;
+							desPos.y += 1;
+						}else if (direction == 1 || direction == 0 && slope > toler && tarPos.x < pos.x + toler){
+							direction = 2;
+							desPos.x += 1;
+							desPos.y += 1;
+						}else if (direction == 2 || direction == 0 && slope < toler && slope > -toler && tarPos.x < pos.x){
+							direction = 3;
+							desPos.x += 1;
+						}else if (direction == 3 || direction == 0 && slope < -toler && tarPos.x < pos.x + toler){
+							direction = 4;
+							desPos.x += 1;
+							desPos.y -= 1;
+						}else if (direction == 4 || direction == 0 && tarPos.x < pos.x + range && tarPos.x > pos.x - range && tarPos.y > pos.y){
+							direction = 5;
+							desPos.y -= 1;
+						}else if (direction == 5 || direction == 0 && slope > toler && tarPos.x > pos.x + toler){
+							direction = 6;
+							desPos.x -= 1;
+							desPos.y -= 1;
+						}else if (direction == 6 || direction == 0 && slope < toler && slope > -toler && tarPos.x > pos.x){
+							direction = 7;
+							desPos.x -= 1;
+						}else if (direction == 7 || direction == 0 && slope < -toler && tarPos.x > pos.x + toler){
+							direction = 8;
+							desPos.x -= 1;
+							desPos.y += 1;
+						}
+					}while(!canPath(pos, desPos));
+					path = findPath(pos, desPos);
 					atdest = false;
 					if (path == null)
 						path = defaultpath;
 					pathcounter = MathUtils.random(60, 180);
-					next_pos.set(path.peek().getX() + .1f, path.peek().getY() + .1f, 0);
+					nextPos.set(path.peek().getX() + .1f, path.peek().getY() + .1f, 0);
 				}else
 					pathcounter--;
 				move(this);
 				break;
 			case attacking:
 				pathcounter = 0;
-				rotation = (float) (MathUtils.radiansToDegrees * Math.atan2(tar_pos.y, tar_pos.x));
+				rotation = (float) (MathUtils.radiansToDegrees * Math.atan2(tarPos.y, tarPos.x) - 90);
 				if(pos.dst2(target.pos) > 1)
 					atdest = false;
 				//helditem.use();
