@@ -37,6 +37,7 @@ public class Player extends Character{
 		ui.updatePlayerUi(health, inventory, equipped, this);
 		
 		Gdx.app.log("Scores", str + " " + dex + " " + con + " " + apt + " " + wis + " " + cha + " " + health);
+		size = medium;
 		
 		setupTextures(t);
 		
@@ -44,7 +45,7 @@ public class Player extends Character{
 //		blank = new TextureRegion(blanktexture, 0, 0, 64, 64);
 		
 		body = new Sprite(t_still);
-		body.setSize(medium, medium * body.getHeight() / body.getWidth());
+		body.setSize(size, size * body.getHeight() / body.getWidth());
 		body.setOrigin(/*body.getX() + */body.getWidth() / 2,/* body.getY() + */body.getHeight() / 2);
 		
 		superstate = idle;

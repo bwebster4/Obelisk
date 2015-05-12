@@ -37,8 +37,9 @@ public class Golem extends Character{
 		target = entitymanager.player;
 		superstate = hunting;
 		
+		size = medium;
 		body = new Sprite(t_still);
-		body.setSize(medium, medium * body.getHeight() / body.getWidth());
+		body.setSize(size, size * body.getHeight() / body.getWidth());
 		body.setOrigin(body.getX() + body.getWidth() / 2, body.getY() + body.getHeight() / 2);
 	}
 	

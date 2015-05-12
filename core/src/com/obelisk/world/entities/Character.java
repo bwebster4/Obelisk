@@ -34,8 +34,8 @@ public abstract class Character extends ActiveEntity{
 	TextureRegion t_still, t_move1, t_move2;
 	
 	public Array<Node> path = new Array<Node>();
-	Array<Node> defaultpath = new Array<Node>();
-	int pathcounter = MathUtils.random(0, 2);
+	protected Array<Node> defaultpath = new Array<Node>();
+	protected int pathcounter = MathUtils.random(0, 2);
 	
 	Character target;
 	protected int health;
@@ -121,8 +121,7 @@ public abstract class Character extends ActiveEntity{
 		if (pos.x <= nextPos.x + speed && pos.x >= nextPos.x - speed && pos.y <= nextPos.y + speed && pos.y >= nextPos.y){
 			if (path.size > 1){
 				path.removeIndex(path.size - 1);
-				nextPos.set(path.peek().getX() + body.getOriginX(), path.peek().getY() + body.getOriginY(), 0);
-	
+				nextPos.set(path.peek().getX() + 1 - body.getWidth(), path.peek().getY() + 1 - body.getHeight(), 0);
 			}else{
 				atdest = true;
 				path = null;
@@ -154,9 +153,9 @@ public abstract class Character extends ActiveEntity{
 	
 	public void hunt(){
 		tarPos.set(target.getPos());
-		if (!atdest){
+		if (pos.dst(tarPos) > size){
 			substate = repositioning;
-		}else if (atdest){
+		}else if (pos.dst(tarPos) <= size){
 			substate = attacking;
 		}else{
 			substate = idle;
@@ -167,59 +166,60 @@ public abstract class Character extends ActiveEntity{
 				pathcounter = 0;
 				break;
 			case repositioning:
-				if (pathcounter == 0){
-					Vector3 desPos;
-					float toler = .75f;
-					int range = 5;
-					float slope = (tarPos.y - pos.y) / (tarPos.x - pos.x);
-					int direction = 0;
-					do{
-						desPos = tarPos.cpy();
-						if (direction == 8 || direction == 0 && tarPos.x < pos.x + range && tarPos.x > pos.x - range && tarPos.y < pos.y){
-							direction = 1;
-							desPos.y += 1;
-						}else if (direction == 1 || direction == 0 && slope > toler && tarPos.x < pos.x + toler){
-							direction = 2;
-							desPos.x += 1;
-							desPos.y += 1;
-						}else if (direction == 2 || direction == 0 && slope < toler && slope > -toler && tarPos.x < pos.x){
-							direction = 3;
-							desPos.x += 1;
-						}else if (direction == 3 || direction == 0 && slope < -toler && tarPos.x < pos.x + toler){
-							direction = 4;
-							desPos.x += 1;
-							desPos.y -= 1;
-						}else if (direction == 4 || direction == 0 && tarPos.x < pos.x + range && tarPos.x > pos.x - range && tarPos.y > pos.y){
-							direction = 5;
-							desPos.y -= 1;
-						}else if (direction == 5 || direction == 0 && slope > toler && tarPos.x > pos.x + toler){
-							direction = 6;
-							desPos.x -= 1;
-							desPos.y -= 1;
-						}else if (direction == 6 || direction == 0 && slope < toler && slope > -toler && tarPos.x > pos.x){
-							direction = 7;
-							desPos.x -= 1;
-						}else if (direction == 7 || direction == 0 && slope < -toler && tarPos.x > pos.x + toler){
-							direction = 8;
-							desPos.x -= 1;
-							desPos.y += 1;
-						}
-					}while(!canPath(pos, desPos));
-					path = findPath(pos, desPos);
+				if (pathcounter == 0 || path == null){
+					
+//					Vector3 desPos;
+//					float toler = .75f;
+//					int range = 5;
+//					float slope = (tarPos.y - pos.y) / (tarPos.x - pos.x);
+//					int direction = 0;
+//					do{
+//						desPos = tarPos.cpy();
+//						if (direction == 8 || direction == 0 && tarPos.x < pos.x + range && tarPos.x > pos.x - range && tarPos.y < pos.y){
+//							direction = 1;
+//							desPos.y += 1;
+//						}else if (direction == 1 || direction == 0 && slope > toler && tarPos.x < pos.x + toler){
+//							direction = 2;
+//							desPos.x += 1;
+//							desPos.y += 1;
+//						}else if (direction == 2 || direction == 0 && slope < toler && slope > -toler && tarPos.x < pos.x){
+//							direction = 3;
+//							desPos.x += 1;
+//						}else if (direction == 3 || direction == 0 && slope < -toler && tarPos.x < pos.x + toler){
+//							direction = 4;
+//							desPos.x += 1;
+//							desPos.y -= 1;
+//						}else if (direction == 4 || direction == 0 && tarPos.x < pos.x + range && tarPos.x > pos.x - range && tarPos.y > pos.y){
+//							direction = 5;
+//							desPos.y -= 1;
+//						}else if (direction == 5 || direction == 0 && slope > toler && tarPos.x > pos.x + toler){
+//							direction = 6;
+//							desPos.x -= 1;
+//							desPos.y -= 1;
+//						}else if (direction == 6 || direction == 0 && slope < toler && slope > -toler && tarPos.x > pos.x){
+//							direction = 7;
+//							desPos.x -= 1;
+//						}else if (direction == 7 || direction == 0 && slope < -toler && tarPos.x > pos.x + toler){
+//							direction = 8;
+//							desPos.x -= 1;
+//							desPos.y += 1;
+//						}
+//					}while(!canPath(pos, desPos));
+					
+					path = findPath(pos, tarPos);
 					atdest = false;
 					if (path == null)
 						path = defaultpath;
 					pathcounter = MathUtils.random(60, 180);
-					nextPos.set(path.peek().getX() + .1f, path.peek().getY() + .1f, 0);
+					nextPos.set(path.peek().getX() + 1 - body.getWidth(), path.peek().getY() + 1 - body.getHeight(), 0);
+					Gdx.app.log("Character", "Path = " + path);
 				}else
 					pathcounter--;
 				move(this);
 				break;
 			case attacking:
 				pathcounter = 0;
-				rotation = (float) (MathUtils.radiansToDegrees * Math.atan2(tarPos.y, tarPos.x) - 90);
-				if(pos.dst2(target.pos) > 1)
-					atdest = false;
+				rotation = (float) (MathUtils.radiansToDegrees * Math.atan2(tarPos.y - pos.y, tarPos.x  - pos.x));
 				//helditem.use();
 				break;
 		}

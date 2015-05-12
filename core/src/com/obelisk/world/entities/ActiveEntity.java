@@ -10,6 +10,7 @@ import com.obelisk.world.pathfinding.Node;
 public abstract class ActiveEntity {
 
 	static final float large = 1.95f, medium = .95f, small = .45f;
+	float size;
 	
 	public Vector3 pos, vel, itempos, desVel, nextPos, tarPos, acc, ahead, ahead2, avoid;
 	public float width, height, rotation;
