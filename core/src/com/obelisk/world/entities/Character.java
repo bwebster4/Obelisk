@@ -168,44 +168,6 @@ public abstract class Character extends ActiveEntity{
 			case repositioning:
 				if (pathcounter == 0 || path == null){
 					
-//					Vector3 desPos;
-//					float toler = .75f;
-//					int range = 5;
-//					float slope = (tarPos.y - pos.y) / (tarPos.x - pos.x);
-//					int direction = 0;
-//					do{
-//						desPos = tarPos.cpy();
-//						if (direction == 8 || direction == 0 && tarPos.x < pos.x + range && tarPos.x > pos.x - range && tarPos.y < pos.y){
-//							direction = 1;
-//							desPos.y += 1;
-//						}else if (direction == 1 || direction == 0 && slope > toler && tarPos.x < pos.x + toler){
-//							direction = 2;
-//							desPos.x += 1;
-//							desPos.y += 1;
-//						}else if (direction == 2 || direction == 0 && slope < toler && slope > -toler && tarPos.x < pos.x){
-//							direction = 3;
-//							desPos.x += 1;
-//						}else if (direction == 3 || direction == 0 && slope < -toler && tarPos.x < pos.x + toler){
-//							direction = 4;
-//							desPos.x += 1;
-//							desPos.y -= 1;
-//						}else if (direction == 4 || direction == 0 && tarPos.x < pos.x + range && tarPos.x > pos.x - range && tarPos.y > pos.y){
-//							direction = 5;
-//							desPos.y -= 1;
-//						}else if (direction == 5 || direction == 0 && slope > toler && tarPos.x > pos.x + toler){
-//							direction = 6;
-//							desPos.x -= 1;
-//							desPos.y -= 1;
-//						}else if (direction == 6 || direction == 0 && slope < toler && slope > -toler && tarPos.x > pos.x){
-//							direction = 7;
-//							desPos.x -= 1;
-//						}else if (direction == 7 || direction == 0 && slope < -toler && tarPos.x > pos.x + toler){
-//							direction = 8;
-//							desPos.x -= 1;
-//							desPos.y += 1;
-//						}
-//					}while(!canPath(pos, desPos));
-					
 					path = findPath(pos, tarPos);
 					atdest = false;
 					if (path == null)
@@ -224,20 +186,7 @@ public abstract class Character extends ActiveEntity{
 				break;
 		}
 	}
-//	public void fire(){
-//		if (weapon.canFire()){
-//			for (int i = 0; i < 4; i++){
-//				Item ammo = equippeditems.getKeyAt(i);
-//				if (ammo != null && ammo.isAmmo()){
-//					if (ammo.getAmmo() > 0){
-//						if (weapon.fire(body.getX() + body.getOriginX(), body.getY() + body.getOriginY())){
-//							ammo.setAmmo(ammo.getAmmo() - 1);
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
+
 	public void updatesprite(){
 		while (rotation < 0)
 			rotation += 360;
