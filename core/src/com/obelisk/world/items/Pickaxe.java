@@ -15,8 +15,8 @@ public class Pickaxe extends Item {
 	
 	int id = 100, equipSlot = 0;
 	
-	public Pickaxe(TextureRegion texture, boolean inWorld, float x, float y, Character entity) {
-		super(texture, inWorld, x, y, entity);
+	public Pickaxe(TextureRegion texture, boolean inWorld, float x, float y) {
+		super(texture, inWorld, x, y);
 	}
 
 	@Override

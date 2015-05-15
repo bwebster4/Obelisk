@@ -9,8 +9,8 @@ public abstract class Ammunition extends Item {
 	boolean canFire = false, canStack = true, isAmmo = true, canBuild = false;
 	int id = 250;
 	
-	public Ammunition(TextureRegion texture, boolean inWorld, float x, float y, Character entity, int ammo) {
-		super(texture, inWorld, x, y, entity);
+	public Ammunition(TextureRegion texture, boolean inWorld, float x, float y, int ammo) {
+		super(texture, inWorld, x, y);
 		
 		this.ammo = ammo;
 	}
@@ -18,7 +18,7 @@ public abstract class Ammunition extends Item {
 	@Override
 	public void update() {
 		if (ammo == 0 && !isDisposable){
-			entity.removeItem(this);
+
 			isDisposable = true;
 			inWorld = false;
 		}

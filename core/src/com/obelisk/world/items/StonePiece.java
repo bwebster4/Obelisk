@@ -11,8 +11,8 @@ public class StonePiece extends Item {
 	int id = 1, stackSize = 1;
 	String name = "Stone";
 	
-	public StonePiece(TextureRegion texture, boolean inWorld, float x, float y, Character entity, int stackSize) {
-		super(texture, inWorld, x, y, entity);
+	public StonePiece(TextureRegion texture, boolean inWorld, float x, float y, int stackSize) {
+		super(texture, inWorld, x, y);
 		this.stackSize = stackSize;
 	}
 
@@ -61,7 +61,7 @@ public class StonePiece extends Item {
 
 	@Override
 	public Item copy() {
-		return new StonePiece(texture, true, x, y, entity, stackSize);
+		return new StonePiece(texture, true, x, y, stackSize);
 	}
 
 	public boolean canStack() {

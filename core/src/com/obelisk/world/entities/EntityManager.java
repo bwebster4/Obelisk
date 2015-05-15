@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.obelisk.GameMain;
 import com.obelisk.InputHandler;
 import com.obelisk.world.WorldMain;
+import com.obelisk.world.entities.skills.Skill;
 import com.obelisk.world.items.ItemManager;
 import com.obelisk.world.items.Pickaxe;
 import com.obelisk.world.pathfinding.Astar;
@@ -34,10 +35,7 @@ public class EntityManager {
 	public Array<Projectile> projectiles = new Array<Projectile>();
 	Array<ActiveEntity> unloadedentities = new Array<ActiveEntity>();
 
-	Projectile projectile;
-
-	Array<Node> testpath = new Array<Node>();
-	Array<Sprite> testpathsprites = new Array<Sprite>();
+	private Array<Skill> skills;
 	
 	Texture character_textures;
 	TextureRegion human_1;
@@ -58,6 +56,8 @@ public class EntityManager {
 		character_textures.setFilter(TextureFilter.Linear, TextureFilter.Nearest);
 		
 		human_1 = new TextureRegion(character_textures, 0, 0, 64, 256);
+		
+		
 		
 		Vector3 startpos = new Vector3(128, 128, 0);
 		while (!WorldMain.map.getWalkable(startpos.x, startpos.y)){
@@ -103,6 +103,7 @@ public class EntityManager {
 			entity.render(batch);
 		}
 			
+		Projectile projectile;
 		for (int i = 0; i < projectiles.size; i++){
 			projectile = projectiles.get(i);
 			projectile.render(batch);
@@ -154,8 +155,8 @@ public class EntityManager {
 			x += MathUtils.random(-3f, 3f);
 			y += MathUtils.random(-3f, 3f);
 		}
-		loadedentities.add(new Golem(x, y, itemmanager, this));
-		Golem biot = (Golem) loadedentities.peek();
+		loadedentities.add(new NPC(x, y, itemmanager, this));
+		NPC biot = (NPC) loadedentities.peek();
 		biot.show(human_1);
 	}
 	public Array<Node> findPath(Vector3 startPos, Vector3 endPos){

@@ -1,52 +1,65 @@
 package com.obelisk.world.entities;
 
+import java.util.Arrays;
+
 import com.badlogic.gdx.utils.Array;
+import com.obelisk.world.entities.skills.Skill;
 
 public class ProfessionChart {
 
 	private Character character;
 	private Array<Profession> professions = new Array<Profession>();
-	static final int warrior = 0, woodsman = 1, settler = 2, chief = 3, druid = 4, sorcerer = 5;
-	static final int soldier = 6, musketeer = 7, blacksmith = 8, architect = 9, aristocrat = 10, 
-			enchanter = 11, warlock = 12;
-	static final int numProfessions = 13;
-	static String[] professionNames = { "Warrior", "Woodsman", "Settler", "Chief", "Druid", "Sorcerer", 
-		"Soldier", "Musketeer", "Blacksmith", "Architect", "Aristocrat", "Enchanter", "Warlock"};
 	
 	public ProfessionChart(Character character){
 		this.character = character;
 		
-		for(int i = 0; i < numProfessions; i++){
+		for(int i = 0; i < CharacterHelper.numProfessions; i++){
 			professions.add(new Profession(i));
 		}
 		
 	}
 	
-	public enum ProfessionStart{
-		WARRIOR(warrior, 1, 0, 0),
-		WOODSMAN(woodsman, 0, 1, 0),
-		SETTLER(settler, 0, 0, 0),
-		CHIEF(chief, 0, 0, 0),
-		DRUID(druid, 0, 0, 1),
-		SORCERER(sorcerer, 0, 0, 1),;
+	public enum ProfessionStats{
+		Warrior(2, 1, 2),
+		Woodsman(2, 1, 2),
+		Settler(0, 0, 4),
+		Chief(1, 1, 3),
+		Druid(1, 1, 3),
+		Sorcerer(1, 1, 3),
 		
-		String name; int meleeMod, rangeMod, magicMod;
-		ProfessionStart(int name, int meleeMod, int rangeMod, int magicMod){
-			this.name = professionNames[name];
+		Soldier(3, 1, 1);
+		
+		public int BAB, lvlBAB, lvlSkills;
+		private int[] skills;
+		
+		ProfessionStats(int BAB, int lvlBAB, int lvlSkills){
+			this.BAB = BAB;
+			this.lvlBAB = lvlBAB;
+			this.lvlSkills = lvlSkills;
+			
 		}
+		
+
 	}
 	
 	private class Profession {
 		
+		int type;
 		int level = 0;
-		int meleeMod, rangeMod, magicMod;
+		int BAB;
 		String name;
-		Array<String> skills;
+		Array<Skill> skills;
 		boolean isCombat;
 		
+		ProfessionStats stats;
 
 		public Profession(int type){
-			name = professionNames[type];
+			this.type = type;
+			name = CharacterHelper.professionNames[type];
+			
+			stats = ProfessionStats.valueOf(name);
+			BAB = stats.BAB;
+			skills = new Array<Skill>();
 		}
 		
 		public String getName(){ 
@@ -54,7 +67,9 @@ public class ProfessionChart {
 		} 
 		public void addLevel(){
 			level++;
+			BAB += stats.lvlBAB;
 		}
 	}
+
 
 }

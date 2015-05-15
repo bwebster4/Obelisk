@@ -34,9 +34,9 @@ public class Player extends Character{
 	public void show(TextureRegion t, InputHandler input){
 		super.show();
 		
-		ui.updatePlayerUi(health, inventory, equipped, this);
+		ui.updatePlayerUi(currentHealth, inventory, equipped, this);
 		
-		Gdx.app.log("Scores", str + " " + dex + " " + con + " " + apt + " " + wis + " " + cha + " " + health);
+		Gdx.app.log("Scores", str + " " + dex + " " + con + " " + apt + " " + wis + " " + cha + " " + maxHealth);
 		size = medium;
 		
 		setupTextures(t);
@@ -54,7 +54,7 @@ public class Player extends Character{
 	}
 
 	public void render(SpriteBatch batch) {
-		if (health <= 0){
+		if (currentHealth <= 0){
 			entitymanager.removeEntity(this);
 		}
 		
@@ -152,7 +152,7 @@ public class Player extends Character{
 		
 		updatesprite();
 		body.draw(batch);	
-		ui.updatePlayerUi(health, inventory, equipped);
+		ui.updatePlayerUi(currentHealth, inventory, equipped);
 		
 		// ====== Items
 		

@@ -11,34 +11,27 @@ public class ItemManager {
 
 	Item item;
 	
+	// Item Types
+	static final int object = 0, meleeWeapon = 1, rangeWeapon = 2, ammo = 3, armor = 4, storage = 5;
+	
 	Texture itemtextures;
-	TextureRegion lightkinetictexture, kineticammo,
+	TextureRegion 
 					pickaxetexture, 
-					kineticpistoltexture, kineticSMG,
+
 					stonetexture;
 	
 	public ItemManager(){
 		itemtextures = new Texture("res/Items.png");
-		lightkinetictexture = new TextureRegion(itemtextures, 0, 64, 64, 32);
 		pickaxetexture = new TextureRegion(itemtextures, 0, 0, 64, 64);
-		kineticpistoltexture = new TextureRegion(itemtextures, 64, 0, 64, 64);
-		kineticSMG = new TextureRegion(itemtextures, 192, 0, 64, 64);
 		stonetexture = new TextureRegion(itemtextures, 64, 64, 64, 64);
-		kineticammo = new TextureRegion(itemtextures, 128, 0, 64, 64);
 	}
 	public TextureRegion getTexture(String string){
-		if (string == "lightkinetic")
-			return lightkinetictexture;
+		if (string == "sword")
+			return pickaxetexture;
 		else if (string == "pickaxe")
 			return pickaxetexture;
-		else if (string == "kineticpistol")
-			return kineticpistoltexture;
-		else if (string == "kineticSMG")
-			return kineticSMG;
 		else if (string == "stone")
 			return stonetexture;
-		else if (string == "kineticammo")
-			return kineticammo;
 		else return null;
 	}
 	

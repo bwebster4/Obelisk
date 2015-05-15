@@ -13,8 +13,8 @@ import com.obelisk.world.pathfinding.Node;
 
 public abstract class Character extends ActiveEntity{
 
-	float speed = 1/30f;
-	float range = 1f;
+	static float STANDARD_SPEED = 2f;
+	float speed = 1 / 30f;
 	
 	int superstate, substate;
 	static final int idle = 0;
@@ -38,9 +38,10 @@ public abstract class Character extends ActiveEntity{
 	protected int pathcounter = MathUtils.random(0, 2);
 	
 	Character target;
-	protected int health;
+	protected int maxHealth, currentHealth;
 	protected int str, dex, con, apt, wis, cha;
 	protected int mstr, mdex, mcon, mapt, mwis, mcha;
+	
 	
 	ProfessionChart profChart;
 	
@@ -90,6 +91,11 @@ public abstract class Character extends ActiveEntity{
 		wis = GameMain.d6(3);
 		cha = GameMain.d6(3);
 
+		setAbilityModifiers();
+		
+		currentHealth = maxHealth;
+	}
+	public void setAbilityModifiers(){
 		mstr = setMod(str);
 		mdex = setMod(dex);
 		mcon = setMod(con);
@@ -97,7 +103,7 @@ public abstract class Character extends ActiveEntity{
 		mwis = setMod(wis);
 		mcha = setMod(cha);
 		
-		health = 8 + mcon;
+		maxHealth = 8 + mcon;
 	}
 	
 	public void destroy(){
@@ -116,7 +122,7 @@ public abstract class Character extends ActiveEntity{
 	}
 	
 	public void move(ActiveEntity entity){
-		speed = Golem.MAX_SPEED * Gdx.graphics.getDeltaTime();
+		speed = STANDARD_SPEED * Gdx.graphics.getDeltaTime();
 		
 		if (pos.x <= nextPos.x + speed && pos.x >= nextPos.x - speed && pos.y <= nextPos.y + speed && pos.y >= nextPos.y){
 			if (path.size > 1){
@@ -286,7 +292,7 @@ public abstract class Character extends ActiveEntity{
 	public float getRange(){
 		if (equipped.get(0)!= null)
 			return equipped.get(0).getRange();
-		else return range;
+		else return size;
 	}
 	
 // ========== Animations
