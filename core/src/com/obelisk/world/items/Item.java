@@ -9,23 +9,29 @@ import com.obelisk.world.entities.Character;
 
 public abstract class Item {
 	
-	public boolean inWorld;
+	private boolean inWorld, isVisible;
 	boolean canFire, isDisposable = false, canStack;
 	int id, stackSize, equipSlot;
 	public Sprite sprite;
 	float x, y;
+	int type;
+	String name;
 	TextureRegion texture;
 	
 	TextButton button;
-	
-	int blockdamage;
-	public float range;
+
+	private float range;
 		
-	public Item(TextureRegion texture, boolean inWorld, float x, float y){
+	public Item(TextureRegion texture, boolean inWorld, float x, float y, int type){
 		this.texture = texture;
 		sprite = new Sprite(texture);
 		sprite.setSize(.5f, .5f);
 		this.inWorld = inWorld;
+
+		this.type = type;
+		switch(type){
+		
+		}
 		
 		if (inWorld){
 			this.x = x;

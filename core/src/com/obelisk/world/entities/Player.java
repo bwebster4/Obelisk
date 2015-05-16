@@ -31,8 +31,8 @@ public class Player extends Character{
 		ui = GM.planetscreen.ui;
 	}
 	
-	public void show(TextureRegion t, InputHandler input){
-		super.show();
+	public void show(TextureRegion t, InputHandler input, String profession){
+		super.show(profession);
 		
 		ui.updatePlayerUi(currentHealth, inventory, equipped, this);
 		
@@ -150,7 +150,7 @@ public class Player extends Character{
 			
 		}	
 		
-		updatesprite();
+		updateSprites();
 		body.draw(batch);	
 		ui.updatePlayerUi(currentHealth, inventory, equipped);
 		

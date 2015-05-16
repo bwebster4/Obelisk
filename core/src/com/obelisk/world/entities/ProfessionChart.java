@@ -17,22 +17,34 @@ public class ProfessionChart {
 			professions.add(new Profession(i));
 		}
 		
+		
+	}
+	
+	public void addLevel(String professionName){
+		for(int i = 0; i < professions.size; i++){
+			if(professionName == professions.get(i).getName()){
+				professions.get(i).addLevel();
+				return;
+			}
+		}
 	}
 	
 	public enum ProfessionStats{
-		Warrior(2, 1, 2),
-		Woodsman(2, 1, 2),
-		Settler(0, 0, 4),
-		Chief(1, 1, 3),
-		Druid(1, 1, 3),
-		Sorcerer(1, 1, 3),
+		Warrior("1d12", 2, 1, 2),
+		Woodsman("1d8", 2, 1, 2),
+		Settler("1d6", 0, 0, 4),
+		Chief("1d8", 1, 1, 3),
+		Druid("1d8", 1, 1, 3),
+		Sorcerer("1d6", 1, 1, 3),
 		
-		Soldier(3, 1, 1);
+		Soldier("1d10", 3, 1, 1);
 		
+		public String hitDie;
 		public int BAB, lvlBAB, lvlSkills;
 		private int[] skills;
 		
-		ProfessionStats(int BAB, int lvlBAB, int lvlSkills){
+		ProfessionStats(String hitDie, int BAB, int lvlBAB, int lvlSkills){
+			this.hitDie = hitDie;
 			this.BAB = BAB;
 			this.lvlBAB = lvlBAB;
 			this.lvlSkills = lvlSkills;
@@ -47,7 +59,8 @@ public class ProfessionChart {
 		int type;
 		int level = 0;
 		int BAB;
-		String name;
+		private String name;
+		private String hitDie;
 		Array<Skill> skills;
 		boolean isCombat;
 		
@@ -59,12 +72,16 @@ public class ProfessionChart {
 			
 			stats = ProfessionStats.valueOf(name);
 			BAB = stats.BAB;
+			hitDie = stats.hitDie;
 			skills = new Array<Skill>();
 		}
 		
 		public String getName(){ 
 			return name;
 		} 
+		public String getHitDie(){
+			return hitDie;
+		}
 		public void addLevel(){
 			level++;
 			BAB += stats.lvlBAB;

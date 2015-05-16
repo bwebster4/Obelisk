@@ -26,35 +26,6 @@ public class StonePiece extends Item {
 	}
 
 	@Override
-	public void flipTexture(boolean x, boolean y) {
-	}
-
-	@Override
-	public float getRange() {
-		return 2f;
-	}
-
-	@Override
-	public int getBlockDamage() {
-		return 0;
-	}
-
-	@Override
-	public boolean canFire() {
-		return canFire;
-	}
-
-	@Override
-	public int getMiningSpeed() {
-		return 0;
-	}
-
-	@Override
-	public boolean fire(float x, float y) {
-		return false;
-	}
-
-	@Override
 	public int getId() {
 		return id;
 	}
@@ -68,19 +39,11 @@ public class StonePiece extends Item {
 		return canStack;
 	}
 	
-	@Override
-	public int getStackSize(){
-		return stackSize;
-	}
 	
 	public boolean isAmmo() {
 		return isAmmo;
 	}
 
-	@Override
-	public int getAmmo() {
-		return 0;
-	}
 
 	@Override
 	public void setAmmo(int ammo) {
@@ -98,5 +61,11 @@ public class StonePiece extends Item {
 	@Override
 	public void use() {
 		
+	}
+
+	@Override
+	public float getRange() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

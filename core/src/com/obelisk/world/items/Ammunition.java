@@ -30,33 +30,8 @@ public abstract class Ammunition extends Item {
 	}
 
 	@Override
-	public void flipTexture(boolean x, boolean y) {
-		
-	}
-
-	@Override
 	public float getRange() {
 		return 2f;
-	}
-
-	@Override
-	public int getBlockDamage() {
-		return 0;
-	}
-
-	@Override
-	public boolean canFire() {
-		return canFire;
-	}
-
-	@Override
-	public int getMiningSpeed() {
-		return 0;
-	}
-
-	@Override
-	public boolean fire(float x, float y) {
-		return false;
 	}
 
 	@Override
@@ -82,10 +57,6 @@ public abstract class Ammunition extends Item {
 		return isAmmo;
 	}
 
-	@Override
-	public int getAmmo() {
-		return ammo;
-	}
 	public void setAmmo(int ammo){
 		this.ammo = ammo;
 	}

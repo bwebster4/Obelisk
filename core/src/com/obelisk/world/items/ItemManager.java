@@ -12,7 +12,11 @@ public class ItemManager {
 	Item item;
 	
 	// Item Types
-	static final int object = 0, meleeWeapon = 1, rangeWeapon = 2, ammo = 3, armor = 4, storage = 5;
+	public static final int object = 0, weapon = 1, tool = 2, armor = 3, container  = 4; //Supertypes
+	// SubTypes
+	public static final int melee = 0, range = 1, // weapon
+			mining = 0, farming = 1, woodcutting = 2; // tool
+			
 	
 	Texture itemtextures;
 	TextureRegion 

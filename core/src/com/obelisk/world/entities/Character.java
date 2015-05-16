@@ -42,6 +42,7 @@ public abstract class Character extends ActiveEntity{
 	protected int str, dex, con, apt, wis, cha;
 	protected int mstr, mdex, mcon, mapt, mwis, mcha;
 	
+	protected int meleeAttackBonus, rangeAttackBonus;
 	
 	ProfessionChart profChart;
 	
@@ -67,9 +68,6 @@ public abstract class Character extends ActiveEntity{
 		equipped.insert(2, null);
 		equipped.insert(3, null);
 		
-		//profChart = new ProfessionChart(this);
-		//profChart.addLevel("Miner");
-		
 		tarPos = new Vector3();
 		nextPos = new Vector3();
 		tarPos.set(x, y, 0);
@@ -77,20 +75,24 @@ public abstract class Character extends ActiveEntity{
 		anim = new Animations();
 	}
 	
-	public void show(){
+	public void show(String profession){
 		vel = new Vector3(0f, 0f, 0);
 		nextPos = new Vector3();
 		desVel = new Vector3();
 		itempos = new Vector3(pos);
 		path = null;
 		
-		str = GameMain.d6(3);
-		dex = GameMain.d6(3);
-		con = GameMain.d6(3);
-		apt = GameMain.d6(3);
-		wis = GameMain.d6(3);
-		cha = GameMain.d6(3);
+		str = GameMain.rollDice("3d6");
+		dex = GameMain.rollDice("3d6");
+		con = GameMain.rollDice("3d6");
+		apt = GameMain.rollDice("3d6");
+		wis = GameMain.rollDice("3d6");
+		cha = GameMain.rollDice("3d6");
 
+		profChart = new ProfessionChart(this);
+		profChart.addLevel(profession);
+		
+		
 		setAbilityModifiers();
 		
 		currentHealth = maxHealth;
@@ -103,7 +105,11 @@ public abstract class Character extends ActiveEntity{
 		mwis = setMod(wis);
 		mcha = setMod(cha);
 		
-		maxHealth = 8 + mcon;
+		
+		maxHealth =  + mcon;
+	}
+	public void levelUp(String profession){
+		profChart.addLevel(profession);
 	}
 	
 	public void destroy(){
@@ -188,12 +194,12 @@ public abstract class Character extends ActiveEntity{
 			case attacking:
 				pathcounter = 0;
 				rotation = (float) (MathUtils.radiansToDegrees * Math.atan2(tarPos.y - pos.y, tarPos.x  - pos.x));
-				//helditem.use();
+				attack();
 				break;
 		}
 	}
 
-	public void updatesprite(){
+	public void updateSprites(){
 		while (rotation < 0)
 			rotation += 360;
 		while (rotation > 360)
@@ -213,8 +219,24 @@ public abstract class Character extends ActiveEntity{
 		
 		body.setRotation(rotation + 90);
 		body.setPosition(getPos().x - body.getOriginX(), getPos().y - body.getOriginY());
+		
+		for(int i = 0; i < equipped.size; i++){
+			Item item = equipped.get(i);
+			item.setPos(pos);
+			
+		}
 
 	}
+	
+	private int attackCounter = 0;
+	public void attack(){
+		if(attackCounter == 30){
+			
+			attackCounter = 1;
+		}else
+			attackCounter++;
+	}
+	
 	public int setMod(int abscore){
 		
 		if (abscore == 1)
@@ -247,7 +269,7 @@ public abstract class Character extends ActiveEntity{
 	
 	public void addItem(Item item, boolean isNew){
 		inventory.add(item);
-		item.pickedUp(this);
+		item.pickedUp();
 		if (isNew)
 			itemmanager.addItem(item);
 	}
@@ -322,6 +344,9 @@ public abstract class Character extends ActiveEntity{
 		public void Still(){
 			isWalking = false;
 			body.setRegion(t_still);
+		}
+		public void attacking(){
+			equipped.get(0);
 		}
 	}
 }

@@ -38,7 +38,7 @@ public class Stone extends Block {
 
 	@Override
 	public void destroy() {
-		itemmanager.addItem(new StonePiece(itemmanager.getTexture("stone"), true, x + width / 4, y + height / 4, null, 1));
+		itemmanager.addItem(new StonePiece(itemmanager.getTexture("stone"), true, x + width / 4, y + height / 4, 1));
 		alive = false;
 	}
 	

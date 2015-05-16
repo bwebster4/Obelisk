@@ -140,7 +140,7 @@ public class EntityManager {
 		player = (Player) loadedentities.peek();
 		player.show(human_1, input);
 
-		Pickaxe item = new Pickaxe(itemmanager.getTexture("pickaxe"), false, 0, 0, player);
+		Pickaxe item = new Pickaxe(itemmanager.getTexture("pickaxe"), false, 0, 0);
 		player.addItem(item, true);
 
 	}

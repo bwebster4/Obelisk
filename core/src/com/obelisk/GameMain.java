@@ -127,46 +127,18 @@ public class GameMain extends Game {
 	
 	// ========== Dice Rolls
 	
-	public static int d4(int count){
+	public static int rollDice(String dice){
+		int count = dice.charAt(0);
+		int type;
+		if(dice.length() == 3)
+			type = dice.charAt(2);
+		else
+			type = (int) (dice.charAt(2) + dice.charAt(3));
 		int n = 0;
 		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 4);
+			n += MathUtils.random(1, type);
 		}
 		return n;
 	}
-	public static int d6(int count){
-		int n = 0;
-		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 6);
-		}
-		return n;
-	}
-	public static int d8(int count){
-		int n = 0;
-		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 8);
-		}
-		return n;
-	}
-	public static int d12(int count){
-		int n = 0;
-		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 12);
-		}
-		return n;
-	}
-	public static int d20(int count){
-		int n = 0;
-		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 20);
-		}
-		return n;
-	}
-	public static int d100(int count){
-		int n = 0;
-		for (int i = 0; i < count; i++){
-			n += MathUtils.random(1, 100);
-		}
-		return n;
-	}
+
 }

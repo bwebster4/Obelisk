@@ -25,23 +25,8 @@ public class Pickaxe extends Item {
 	}
 
 	@Override
-	public int getBlockDamage() {
-		return blockdamage;
-	}
-
-	@Override
 	public TextureRegion getTexture() {
 		return texture;
-	}
-
-	@Override
-	public boolean canFire() {
-		return canFire;
-	}
-
-	@Override
-	public boolean fire(float x, float y) {
-		return false;
 	}
 
 	@Override
@@ -50,16 +35,6 @@ public class Pickaxe extends Item {
 		
 	}
 
-	@Override
-	public int getMiningSpeed() {
-		return miningspeed;
-	}
-
-	@Override
-	public void flipTexture(boolean x, boolean y) {
-		if (sprite.isFlipX() != x)
-			sprite.flip(x, y);
-	}
 	public int getId() {
 		return id;
 	}
@@ -75,12 +50,6 @@ public class Pickaxe extends Item {
 	public boolean isAmmo() {
 		// TODO Auto-generated method stub
 		return isAmmo;
-	}
-
-	@Override
-	public int getAmmo() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -101,11 +70,6 @@ public class Pickaxe extends Item {
 	public void use() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public int getStackSize() {
-		return 1;
 	}
 	
 	@Override
