@@ -14,8 +14,9 @@ import com.obelisk.GameMain;
 import com.obelisk.InputHandler;
 import com.obelisk.world.WorldMain;
 import com.obelisk.world.entities.skills.Skill;
+import com.obelisk.world.items.Item;
 import com.obelisk.world.items.ItemManager;
-import com.obelisk.world.items.Pickaxe;
+import com.obelisk.world.items.ItemType;
 import com.obelisk.world.pathfinding.Astar;
 import com.obelisk.world.pathfinding.Node;
 import com.obelisk.world.pathfinding.PathfindingManager;
@@ -28,7 +29,7 @@ public class EntityManager {
 	InputHandler input;
 	ItemManager itemmanager;
 	Collisions collisions;
-	GameMain GM;
+	WorldMain WM;
 	Astar astar;
 	
 	public Array<ActiveEntity> loadedentities = new Array<ActiveEntity>();
@@ -42,13 +43,13 @@ public class EntityManager {
 	
 	int biot_freq = 1800;
 	int wave = 0;
-	int endcounter = 300;
+	int endcounter = 150;
 	boolean ended = false;
 	
-	public void show(InputHandler input, Collisions collisions, GameMain GM, ItemManager itemmanager, PathfindingManager PM){
+	public void show(InputHandler input, Collisions collisions, WorldMain WM, ItemManager itemmanager, PathfindingManager PM){
 		this.itemmanager = itemmanager;
 		this.collisions = collisions;
-		this.GM = GM;
+		this.WM = WM;
 		this.input = input;
 		this.astar = PM.getAstar();
 		
@@ -84,7 +85,7 @@ public class EntityManager {
 		if(ended){
 			endcounter--;
 			if (endcounter == 0){
-				GM.endGame();
+				WM.endGame();
 			}
 		}
 		
@@ -136,11 +137,11 @@ public class EntityManager {
 		projectiles.removeValue(projectile, false);
 	}
 	public void addPlayer(float x, float y){
-		loadedentities.add(new Player(x, y, this, GM, itemmanager));
+		loadedentities.add(new Player(x, y, this, WM, itemmanager));
 		player = (Player) loadedentities.peek();
-		player.show(human_1, input);
+		player.show(human_1, input, CharacterHelper.warrior);
 
-		Pickaxe item = new Pickaxe(itemmanager.getTexture("pickaxe"), false, 0, 0);
+		Item item = new Item(ItemType.Pickaxe, itemmanager.getTexture("pickaxe"), false, 0, 0);
 		player.addItem(item, true);
 
 	}
@@ -157,7 +158,7 @@ public class EntityManager {
 		}
 		loadedentities.add(new NPC(x, y, itemmanager, this));
 		NPC biot = (NPC) loadedentities.peek();
-		biot.show(human_1);
+		biot.show(human_1, CharacterHelper.warrior);
 	}
 	public Array<Node> findPath(Vector3 startPos, Vector3 endPos){
 		return astar.findPath(startPos, endPos);

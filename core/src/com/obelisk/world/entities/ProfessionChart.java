@@ -20,13 +20,11 @@ public class ProfessionChart {
 		
 	}
 	
-	public void addLevel(String professionName){
-		for(int i = 0; i < professions.size; i++){
-			if(professionName == professions.get(i).getName()){
-				professions.get(i).addLevel();
-				return;
-			}
-		}
+	public void addLevel(int profession){
+		professions.get(profession).addLevel();
+	}
+	public String getHitDie(int profession){
+		return ProfessionStats.valueOf(CharacterHelper.professionNames[profession]).hitDie;
 	}
 	
 	public enum ProfessionStats{
@@ -35,9 +33,15 @@ public class ProfessionChart {
 		Settler("1d6", 0, 0, 4),
 		Chief("1d8", 1, 1, 3),
 		Druid("1d8", 1, 1, 3),
-		Sorcerer("1d6", 1, 1, 3),
+		Sorcerer("1d6", 0, 1, 3),
 		
-		Soldier("1d10", 3, 1, 1);
+		Soldier("1d10", 3, 1, 1),
+		Musketeer("1d8", 2, 1, 2),
+		Blacksmith("1d6", 0, 0, 4),
+		Architect("1d6", 0, 0, 4),
+		Aristocrat("1d8", 0, 1, 3),
+		Enchanter("1d8", 2, 1, 2),
+		Warlock("1d6", 0, 1, 4);
 		
 		public String hitDie;
 		public int BAB, lvlBAB, lvlSkills;

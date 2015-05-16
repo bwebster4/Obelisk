@@ -32,11 +32,11 @@ public abstract class ActiveEntity {
 		return pos.cpy().add((body.getOriginX() / 2) * MathUtils.cosDeg(rotation + 90), (body.getOriginY() / 2) * MathUtils.sinDeg(rotation + 90), 0);
 	}
 	public Array<Node> findPath(Vector3 start_pos, Vector3 end_pos){
-		Array<Node> path = entitymanager.findPath(start_pos, end_pos);
-		return path;
+		return entitymanager.findPath(start_pos, end_pos);
 	}
 	public boolean canPath(Vector3 startPos, Vector3 endPos){
 		return entitymanager.canPath(startPos, endPos);
-		
 	}
+	
+
 }

@@ -3,8 +3,9 @@ package com.obelisk.world.blocks;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.obelisk.InputHandler;
 import com.obelisk.world.entities.ActiveEntity;
+import com.obelisk.world.items.Item;
 import com.obelisk.world.items.ItemManager;
-import com.obelisk.world.items.StonePiece;
+import com.obelisk.world.items.ItemType;
 
 public class Stone extends Block {
 
@@ -38,7 +39,7 @@ public class Stone extends Block {
 
 	@Override
 	public void destroy() {
-		itemmanager.addItem(new StonePiece(itemmanager.getTexture("stone"), true, pos.x + width / 4, pos.y + height / 4, 1));
+		itemmanager.addItem(new Item(ItemType.StonePiece, itemmanager.getTexture("stone"), true, pos.x + width / 4, pos.y + height / 4));
 		alive = false;
 	}
 	

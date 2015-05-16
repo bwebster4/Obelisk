@@ -42,7 +42,7 @@ public abstract class Character extends ActiveEntity{
 	protected int str, dex, con, apt, wis, cha;
 	protected int mstr, mdex, mcon, mapt, mwis, mcha;
 	
-	protected int meleeAttackBonus, rangeAttackBonus;
+	protected int meleeAttackBonus, rangeAttackBonus, armorClass;
 	
 	ProfessionChart profChart;
 	
@@ -75,7 +75,7 @@ public abstract class Character extends ActiveEntity{
 		anim = new Animations();
 	}
 	
-	public void show(String profession){
+	public void show(int profession){
 		vel = new Vector3(0f, 0f, 0);
 		nextPos = new Vector3();
 		desVel = new Vector3();
@@ -94,6 +94,8 @@ public abstract class Character extends ActiveEntity{
 		
 		
 		setAbilityModifiers();
+		maxHealth = Integer.parseInt(profChart.getHitDie(profession).substring(2)) + mcon;
+		armorClass = 10 + mdex;
 		
 		currentHealth = maxHealth;
 	}
@@ -104,11 +106,8 @@ public abstract class Character extends ActiveEntity{
 		mapt = setMod(apt);
 		mwis = setMod(wis);
 		mcha = setMod(cha);
-		
-		
-		maxHealth =  + mcon;
 	}
-	public void levelUp(String profession){
+	public void levelUp(int profession){
 		profChart.addLevel(profession);
 	}
 	
@@ -133,7 +132,7 @@ public abstract class Character extends ActiveEntity{
 		if (pos.x <= nextPos.x + speed && pos.x >= nextPos.x - speed && pos.y <= nextPos.y + speed && pos.y >= nextPos.y){
 			if (path.size > 1){
 				path.removeIndex(path.size - 1);
-				nextPos.set(path.peek().getX() + 1 - body.getWidth(), path.peek().getY() + 1 - body.getHeight(), 0);
+				nextPos.set(path.peek().getX() + 0.5f, path.peek().getY() + 0.5f, 0);
 			}else{
 				atdest = true;
 				path = null;
@@ -185,8 +184,7 @@ public abstract class Character extends ActiveEntity{
 					if (path == null)
 						path = defaultpath;
 					pathcounter = MathUtils.random(60, 180);
-					nextPos.set(path.peek().getX() + 1 - body.getWidth(), path.peek().getY() + 1 - body.getHeight(), 0);
-					Gdx.app.log("Character", "Path = " + path);
+					nextPos.set(path.peek().getX() + .5f, path.peek().getY() + .5f, 0);
 				}else
 					pathcounter--;
 				move(this);
@@ -220,23 +218,33 @@ public abstract class Character extends ActiveEntity{
 		body.setRotation(rotation + 90);
 		body.setPosition(getPos().x - body.getOriginX(), getPos().y - body.getOriginY());
 		
-		for(int i = 0; i < equipped.size; i++){
-			Item item = equipped.get(i);
-			item.setPos(pos);
-			
-		}
+//		for(int i = 0; i < equipped.size; i++){
+//			Item item = equipped.get(i);
+//			item.setPos(pos);
+//			
+//		}
 
 	}
 	
 	private int attackCounter = 0;
 	public void attack(){
-		if(attackCounter == 30){
-			
+		if(attackCounter == 30 - mdex * 2){
+			int damage;
+			if(GameMain.rollDice("1d20") + mstr >= target.armorClass){
+				if(equipped.get(0) == null)
+					damage = GameMain.rollDice("1d2") + mstr;
+				else
+					damage = GameMain.rollDice(equipped.get(0).getDamage()) + mstr;
+				if (damage < 1) damage = 1;
+				target.changeHealth(- damage);
+			}
 			attackCounter = 1;
 		}else
 			attackCounter++;
 	}
-	
+	public void changeHealth(int amount){
+		currentHealth += amount;
+	}
 	public int setMod(int abscore){
 		
 		if (abscore == 1)

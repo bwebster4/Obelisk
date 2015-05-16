@@ -64,9 +64,9 @@ public class GameMain extends Game {
 		running = false;
 	}
 	public void endGame(){
-		//planetscreen.pause();
-		setScreen(startscreen);
 		planetscreen.dispose();
+		setScreen(startscreen);
+
 		planetscreen = null;
 		
 	}
@@ -93,7 +93,6 @@ public class GameMain extends Game {
 	public void startGame(){
 		planetscreen = new WorldMain(this, input, WIDTH, HEIGHT);
 		setScreen(planetscreen);
-		
 		setup = true;
 	}
 	
@@ -128,12 +127,8 @@ public class GameMain extends Game {
 	// ========== Dice Rolls
 	
 	public static int rollDice(String dice){
-		int count = dice.charAt(0);
-		int type;
-		if(dice.length() == 3)
-			type = dice.charAt(2);
-		else
-			type = (int) (dice.charAt(2) + dice.charAt(3));
+		int count = Character.getNumericValue(dice.charAt(0));
+		int type = Integer.parseInt(dice.substring(2));
 		int n = 0;
 		for (int i = 0; i < count; i++){
 			n += MathUtils.random(1, type);

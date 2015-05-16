@@ -16,7 +16,6 @@ import com.obelisk.world.pathfinding.Node;
 public class Player extends Character{
 
 	Ui ui;
-	GameMain GM;
 	Item item;
 	
 	InputHandler input;
@@ -24,14 +23,13 @@ public class Player extends Character{
 	
 	String faction = "player";
 
-	public Player(float x, float y, EntityManager entitymanager, GameMain GM, ItemManager itemmanager) {
+	public Player(float x, float y, EntityManager entitymanager, WorldMain WM, ItemManager itemmanager) {
 		super(x, y, itemmanager, entitymanager);
-		
-		this.GM = GM;
-		ui = GM.planetscreen.ui;
+
+		ui = WM.ui;
 	}
 	
-	public void show(TextureRegion t, InputHandler input, String profession){
+	public void show(TextureRegion t, InputHandler input, int profession){
 		super.show(profession);
 		
 		ui.updatePlayerUi(currentHealth, inventory, equipped, this);
@@ -116,6 +114,8 @@ public class Player extends Character{
 			for (int i = 0; i < entitymanager.loadedentities.size; i++){
 				ActiveEntity entity = entitymanager.loadedentities.get(i);
 				if ((int) WorldMain.touchpos.x == (int) entity.getPos().x && (int) WorldMain.touchpos.y == (int) entity.getPos().y){
+					if(entity.getFaction() == faction)
+						break;
 					target = (Character) entity;
 					superstate = hunting;
 					actionperformed = true;
@@ -179,10 +179,6 @@ public class Player extends Character{
 		
 		for (int i = 0; i < inventory.size; i++){
 			item = inventory.get(i);
-			if (item != null){
-				item.update();
-				
-			}
 		}
 //		if (helditem != null){
 //			if (helditem.canFire() && input.isLeftButtonHeld()){

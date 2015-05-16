@@ -86,13 +86,14 @@ public class Astar {
 		}
 		
 		Node node = open.poll();
+		if(node == null)
+			node = endnode;
 		path = buildPath(node);
 		open.clear();
 		return path;		
 	}
 	
 	public Array<Node> buildPath(Node end){
-		
 		Array<Node> path = new Array<Node>();
 		path.add(end);
 		int pathnodes = 1;

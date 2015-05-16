@@ -7,14 +7,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.obelisk.world.entities.Character;
 
-public abstract class Item {
+public class Item {
 	
 	private boolean inWorld, isVisible;
-	boolean canFire, isDisposable = false, canStack;
-	int id, stackSize, equipSlot;
+	boolean isDisposable = false;
 	public Sprite sprite;
 	float x, y;
-	int type;
+	ItemType type;
 	String name;
 	TextureRegion texture;
 	
@@ -22,23 +21,23 @@ public abstract class Item {
 
 	private float range;
 		
-	public Item(TextureRegion texture, boolean inWorld, float x, float y, int type){
+	public Item(ItemType type, TextureRegion texture, boolean inWorld, float x, float y){
+
+		this.inWorld = inWorld;
+		isVisible = inWorld;
+		
+		this.type = type;
 		this.texture = texture;
 		sprite = new Sprite(texture);
 		sprite.setSize(.5f, .5f);
-		this.inWorld = inWorld;
-
-		this.type = type;
-		switch(type){
 		
-		}
 		
 		if (inWorld){
 			this.x = x;
 			this.y = y;
 		}
 	}
-	public abstract void update();
+
 	public void render(SpriteBatch batch, boolean isActive){
 		if (inWorld){
 			sprite.setPosition(x, y);
@@ -48,6 +47,7 @@ public abstract class Item {
 			sprite.draw(batch);
 		}
 	}
+	
 	public void setPos(Vector3 pos){
 		x = pos.x;
 		y = pos.y;
@@ -61,31 +61,32 @@ public abstract class Item {
 	public void pickedUp(){
 		inWorld = false;
 	}
+	
 	public boolean isDisposable(){
 		return isDisposable;
 	}
-	
 	public void setButton(TextButton button){
 		this.button = button;
 	}
 	public TextButton getButton(){
 		return button;
 	}
-	
-	public abstract void use();
-	
-	public abstract int getId();
-	public abstract String getName();
-	public abstract float getRange();
-	public abstract TextureRegion getTexture();
-
+	public String getName(){
+		return name;
+	}
+	public float getRange(){
+		return range;
+	}
+	public String getDamage(){
+		return type.getDamage();
+	}
 	public int getEquipSlot(){
 		return -1;
 	}
 
-	public abstract void setAmmo(int ammo);
-	public abstract Item copy();
-	public abstract boolean canStack();
-	public abstract boolean isAmmo();
+	public Item copy(){
+		return new Item(type, texture, inWorld, x, y);
+	}
+
 	
 }

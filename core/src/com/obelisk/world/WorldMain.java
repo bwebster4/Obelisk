@@ -26,6 +26,7 @@ public class WorldMain implements Screen {
 	static final int LOADING = 0;
 	static final int RUNNING = 1;
 	static final int PAUSED = 2;
+	static final int ENDING = 3;
 	
 	// Loading Screen ==========
 	Stage stage;
@@ -134,9 +135,7 @@ public class WorldMain implements Screen {
 			camera.unproject(touchpos);
 			cursorsprite.setPosition(touchpos.x - cursorsprite.getWidth() / 2, touchpos.y  - cursorsprite.getHeight() / 2);
 			float angle = MathUtils.atan2(touchpos.y - entitymanager.getplayerY(), touchpos.x - entitymanager.getplayerX());
-//			if (distance > entitymanager.getplayerRange()){
-//				cursorsprite.setPosition(entitymanager.getplayerRange() * MathUtils.cos(angle) + entitymanager.getplayerX(), entitymanager.getplayerRange() * MathUtils.sin(angle) + entitymanager.getplayerY());
-//			}
+
 			touchpos.x = cursorsprite.getX() + cursorsprite.getWidth() / 2;
 			touchpos.y = cursorsprite.getY() + cursorsprite.getHeight() / 2;
 			
@@ -146,8 +145,6 @@ public class WorldMain implements Screen {
 			map.render(batch, touchpos, camrect);
 			itemmanager.render(batch);
 			entitymanager.render(batch, angle, camrect);
-			
-			//cursorsprite.draw(batch);
 			
 			map.drawShader(batch, camrect);
 			
@@ -162,6 +159,10 @@ public class WorldMain implements Screen {
 			ui.render(state);
 
 			break;
+			
+			case ENDING:
+				GM.endGame();
+				break;
 
 	}
 
@@ -227,7 +228,7 @@ public class WorldMain implements Screen {
 		
 		PM.show(map);
 		entitymanager = new EntityManager();
-		entitymanager.show(input, collisions, GM, itemmanager, PM);
+		entitymanager.show(input, collisions, this, itemmanager, PM);
 	}
 
 //	public void addItem(Item item, Character c){
@@ -268,6 +269,10 @@ public class WorldMain implements Screen {
 
 	}
 
+	public void endGame(){
+		state = ENDING;
+	}
+	
 	@Override
 	public void dispose() {
 		if (created){
