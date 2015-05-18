@@ -4,6 +4,7 @@ public enum ItemType {
 
 	Pickaxe("Pickaxe", 1f, "1d4", ItemManager.tool, ItemManager.mining),
 	Sword("Sword", 1f, "1d6", ItemManager.weapon, ItemManager.melee),
+	Warhammer("Warhammer", 1f, "1d10", ItemManager.weapon, ItemManager.melee),
 	StonePiece("Stone", 1f, "1d3", ItemManager.object);
 	
 	private float range;

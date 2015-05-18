@@ -2,6 +2,7 @@ package com.obelisk.world.items;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
@@ -18,24 +19,28 @@ public class ItemManager {
 			mining = 0, farming = 1, woodcutting = 2; // tool
 			
 	
-	Texture itemtextures;
-	TextureRegion 
+	TextureAtlas itemtextures;
+	TextureRegion 	warhammerTexture,
 					pickaxetexture, 
-
+					swordTexture,
 					stonetexture;
 	
 	public ItemManager(){
-		itemtextures = new Texture("res/Items.png");
-		pickaxetexture = new TextureRegion(itemtextures, 0, 0, 64, 64);
-		stonetexture = new TextureRegion(itemtextures, 64, 64, 64, 64);
+		itemtextures = new TextureAtlas("res/Items.txt");
+		pickaxetexture = new TextureRegion(itemtextures.findRegion("Pickaxe"));
+		stonetexture = new TextureRegion(itemtextures.findRegion("StonePieces"));
+		swordTexture = new TextureRegion(itemtextures.findRegion("Sword"));
+		warhammerTexture = new TextureRegion(itemtextures.findRegion("Warhammer"));
 	}
 	public TextureRegion getTexture(String string){
 		if (string == ItemType.Pickaxe.getName())
 			return pickaxetexture;
 		else if (string == ItemType.Sword.getName())
-			return pickaxetexture;
+			return swordTexture;
 		else if (string == ItemType.StonePiece.getName())
 			return stonetexture;
+		else if (string == ItemType.Warhammer.getName())
+			return warhammerTexture;
 		else return null;
 	}
 	

@@ -1,0 +1,32 @@
+Items.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Pickaxe
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+StonePieces
+  rotate: false
+  xy: 68, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Sword
+  rotate: false
+  xy: 134, 2
+  size: 17, 63
+  orig: 17, 63
+  offset: 0, 0
+  index: -1
+Warhammer
+  rotate: false
+  xy: 153, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
