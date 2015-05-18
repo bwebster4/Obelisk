@@ -141,7 +141,7 @@ public class EntityManager {
 		player = (Player) loadedentities.peek();
 		player.show(human_1, input, CharacterHelper.warrior);
 
-		Item item = new Item(ItemType.Pickaxe, itemmanager.getTexture("pickaxe"), false, 0, 0);
+		Item item = new Item(ItemType.Pickaxe, itemmanager.getTexture(ItemType.Pickaxe.getName()), false, 0, 0);
 		player.addItem(item, true);
 
 	}

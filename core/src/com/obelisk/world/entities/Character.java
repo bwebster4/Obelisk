@@ -233,9 +233,10 @@ public abstract class Character extends ActiveEntity{
 			if(GameMain.rollDice("1d20") + mstr >= target.armorClass){
 				if(equipped.get(0) == null)
 					damage = GameMain.rollDice("1d2") + mstr;
-				else
+				else{
 					damage = GameMain.rollDice(equipped.get(0).getDamage()) + mstr;
-				if (damage < 1) damage = 1;
+				}
+					if (damage < 1) damage = 1;
 				target.changeHealth(- damage);
 			}
 			attackCounter = 1;

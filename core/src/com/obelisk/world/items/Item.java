@@ -14,7 +14,6 @@ public class Item {
 	public Sprite sprite;
 	float x, y;
 	ItemType type;
-	String name;
 	TextureRegion texture;
 	
 	TextButton button;
@@ -72,16 +71,16 @@ public class Item {
 		return button;
 	}
 	public String getName(){
-		return name;
+		return type.getName();
 	}
 	public float getRange(){
-		return range;
+		return type.getRange();
 	}
 	public String getDamage(){
 		return type.getDamage();
 	}
 	public int getEquipSlot(){
-		return -1;
+		return type.equipSlot;
 	}
 
 	public Item copy(){

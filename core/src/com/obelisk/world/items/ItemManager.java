@@ -30,11 +30,11 @@ public class ItemManager {
 		stonetexture = new TextureRegion(itemtextures, 64, 64, 64, 64);
 	}
 	public TextureRegion getTexture(String string){
-		if (string == "sword")
+		if (string == ItemType.Pickaxe.getName())
 			return pickaxetexture;
-		else if (string == "pickaxe")
+		else if (string == ItemType.Sword.getName())
 			return pickaxetexture;
-		else if (string == "stone")
+		else if (string == ItemType.StonePiece.getName())
 			return stonetexture;
 		else return null;
 	}
