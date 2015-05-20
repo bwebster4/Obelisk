@@ -44,6 +44,11 @@ public class ItemManager {
 		else return null;
 	}
 	
+	public Item getNewItem(ItemType type, boolean inWorld, float x, float y){
+		Item item = new Item(type, getTexture(type.getName()), inWorld, x, y);
+		worlditems.add(item);
+		return item;
+	}
 	public void addItem(Item item){
 		worlditems.add(item);
 	}
@@ -53,7 +58,7 @@ public class ItemManager {
 	public void render(SpriteBatch batch){
 		for (int i = 0; i < worlditems.size; i++){
 			item = worlditems.get(i);
-			item.render(batch, false);
+			item.render(batch);
 			if (item.isDisposable())
 				worlditems.removeValue(item, true);
 		}

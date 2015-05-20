@@ -1,6 +1,7 @@
 package com.obelisk.world.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -96,6 +97,8 @@ public abstract class Character extends ActiveEntity{
 		setAbilityModifiers();
 		maxHealth = Integer.parseInt(profChart.getHitDie(profession).substring(2)) + mcon;
 		armorClass = 10 + mdex;
+		meleeAttackBonus = profChart.getProfession(profession).getBAB() + mstr;
+		rangeAttackBonus = profChart.getProfession(profession).getBAB() + mdex;
 		
 		currentHealth = maxHealth;
 	}
@@ -109,6 +112,10 @@ public abstract class Character extends ActiveEntity{
 	}
 	public void levelUp(int profession){
 		profChart.addLevel(profession);
+		
+		maxHealth += GameMain.rollDice(profChart.getHitDie(profession)) + mcon;
+		meleeAttackBonus = profChart.getProfession(profession).getBAB() + mstr;
+		rangeAttackBonus = profChart.getProfession(profession).getBAB() + mdex;
 	}
 	
 	public void destroy(){
@@ -124,6 +131,13 @@ public abstract class Character extends ActiveEntity{
 		t_still = new TextureRegion(t, 0, 0, 64, 64);
 		t_move1 = new TextureRegion(t, 64, 0, 64, 64);
 		t_move2 = new TextureRegion(t, 128, 0, 64, 64);
+	}
+	
+	public void renderItems(SpriteBatch batch){
+		for(int i = 0; i < equipped.size; i++){
+			if(equipped.get(i) != null)
+				equipped.get(i).renderFromCharacter(batch);
+		}
 	}
 	
 	public void move(ActiveEntity entity){
@@ -218,11 +232,12 @@ public abstract class Character extends ActiveEntity{
 		body.setRotation(rotation + 90);
 		body.setPosition(getPos().x - body.getOriginX(), getPos().y - body.getOriginY());
 		
-//		for(int i = 0; i < equipped.size; i++){
-//			Item item = equipped.get(i);
-//			item.setPos(pos);
-//			
-//		}
+		for(int i = 0; i < equipped.size; i++){
+			Item item = equipped.get(i);
+			if(item != null)
+				item.setPos(pos, rotation);
+			
+		}
 
 	}
 	
@@ -230,7 +245,7 @@ public abstract class Character extends ActiveEntity{
 	public void attack(){
 		if(attackCounter == 30 - mdex * 2){
 			int damage;
-			if(GameMain.rollDice("1d20") + mstr >= target.armorClass){
+			if(GameMain.rollDice("1d20") + meleeAttackBonus >= target.armorClass){
 				if(equipped.get(0) == null)
 					damage = GameMain.rollDice("1d2") + mstr;
 				else{
@@ -276,11 +291,9 @@ public abstract class Character extends ActiveEntity{
 	
 // ========== Items
 	
-	public void addItem(Item item, boolean isNew){
+	public void addItem(Item item){
 		inventory.add(item);
 		item.pickedUp();
-		if (isNew)
-			itemmanager.addItem(item);
 	}
 	public void removeItem(Item item){
 		inventory.removeValue(item, true);
@@ -295,11 +308,14 @@ public abstract class Character extends ActiveEntity{
 	public void equipItem(Item item, int pos){
 		unequipItem(pos);
 		inventory.removeValue(item, true);
+		item.setVisible(true);
 		equipped.insert(pos, item);
 	}
 	public void unequipItem(int pos){
 		Item item = equipped.get(pos);
+		
 		if(item != null){
+			item.setVisible(false);
 			equipped.removeIndex(pos);
 			inventory.add(item);
 		}

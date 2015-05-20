@@ -106,11 +106,13 @@ public class Ui {
 		
 		invMenu = new Table(uiskin);
 		invMenu.setBackground(uiskin.getDrawable("default-round-large"));
-		invMenu.add(equipLabel).center().row();
+		invMenu.add(equipLabel).center().colspan(2);
+		invMenu.row();
 		invMenu.add(equipmentLabels).left();
 		invMenu.add(equipment).left().row();
 		invMenu.add(invLabel).row();
 		invMenu.top().left();
+		invMenu.setDebug(true);
 		invMenu.setVisible(false);
 		
 		inventory = new VerticalGroup();

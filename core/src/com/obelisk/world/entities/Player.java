@@ -151,6 +151,7 @@ public class Player extends Character{
 		}	
 		
 		updateSprites();
+		//renderItems(batch);
 		body.draw(batch);	
 		ui.updatePlayerUi(currentHealth, inventory, equipped);
 		

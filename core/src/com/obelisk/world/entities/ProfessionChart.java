@@ -26,43 +26,46 @@ public class ProfessionChart {
 	public String getHitDie(int profession){
 		return ProfessionStats.valueOf(CharacterHelper.professionNames[profession]).hitDie;
 	}
+	public Profession getProfession(int profession){
+		return professions.get(profession);
+	}
 	
 	public enum ProfessionStats{
 		Warrior("1d12", 2, 1, 2),
-		Woodsman("1d8", 2, 1, 2),
+		Woodsman("1d8", 1, 0.75, 2),
 		Settler("1d6", 0, 0, 4),
-		Chief("1d8", 1, 1, 3),
-		Druid("1d8", 1, 1, 3),
-		Sorcerer("1d6", 0, 1, 3),
+		Chief("1d8", 0, 0.75, 3),
+		Druid("1d8", 1, 0.5, 3),
+		Sorcerer("1d6", 0, 0.5, 3),
 		
-		Soldier("1d10", 3, 1, 1),
-		Musketeer("1d8", 2, 1, 2),
+		Soldier("1d10", 2, 1, 1),
+		Musketeer("1d8", 2, 0.75, 2),
 		Blacksmith("1d6", 0, 0, 4),
 		Architect("1d6", 0, 0, 4),
-		Aristocrat("1d8", 0, 1, 3),
-		Enchanter("1d8", 2, 1, 2),
-		Warlock("1d6", 0, 1, 4);
+		Aristocrat("1d8", 0, 0.5, 3),
+		Enchanter("1d8", 1, 1, 2),
+		Warlock("1d6", 0, 0.5, 3);
 		
 		public String hitDie;
-		public int BAB, lvlBAB, lvlSkills;
+		public int lvlSkills;
+		public double BAB, lvlBAB;
 		private int[] skills;
 		
-		ProfessionStats(String hitDie, int BAB, int lvlBAB, int lvlSkills){
+		ProfessionStats(String hitDie, double BAB, double lvlBAB, int lvlSkills){
 			this.hitDie = hitDie;
 			this.BAB = BAB;
 			this.lvlBAB = lvlBAB;
 			this.lvlSkills = lvlSkills;
-			
 		}
 		
 
 	}
 	
-	private class Profession {
+	public class Profession {
 		
 		int type;
 		int level = 0;
-		int BAB;
+		double BAB;
 		private String name;
 		private String hitDie;
 		Array<Skill> skills;
@@ -85,6 +88,9 @@ public class ProfessionChart {
 		} 
 		public String getHitDie(){
 			return hitDie;
+		}
+		public int getBAB(){
+			return (int) BAB;
 		}
 		public void addLevel(){
 			level++;

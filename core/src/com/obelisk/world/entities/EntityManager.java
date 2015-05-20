@@ -141,8 +141,13 @@ public class EntityManager {
 		player = (Player) loadedentities.peek();
 		player.show(human_1, input, CharacterHelper.warrior);
 
-		Item item = new Item(ItemType.Pickaxe, itemmanager.getTexture(ItemType.Pickaxe.getName()), false, 0, 0);
-		player.addItem(item, true);
+		Item item = itemmanager.getNewItem(ItemType.Pickaxe, false, 0, 0);
+		player.addItem(item);
+		item = itemmanager.getNewItem(ItemType.Sword, false, 0, 0);
+		player.addItem(item);
+		item = itemmanager.getNewItem(ItemType.Warhammer, false, 0, 0);
+		player.addItem(item);
+		
 
 	}
 	public void removeEntity(ActiveEntity entity){
@@ -159,6 +164,9 @@ public class EntityManager {
 		loadedentities.add(new NPC(x, y, itemmanager, this));
 		NPC biot = (NPC) loadedentities.peek();
 		biot.show(human_1, CharacterHelper.warrior);
+		Item item = itemmanager.getNewItem(ItemType.Sword, false, 0, 0);
+		biot.addItem(item);
+		biot.equipItem(item, 0);
 	}
 	public Array<Node> findPath(Vector3 startPos, Vector3 endPos){
 		return astar.findPath(startPos, endPos);

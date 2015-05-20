@@ -65,6 +65,7 @@ public class NPC extends Character{
 		}
 
 		updateSprites();
+		//renderItems(batch);
 		body.draw(batch);
 		
 		/*if (rotation >= 0 && rotation <= 45){

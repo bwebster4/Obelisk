@@ -12,7 +12,7 @@ public class Item {
 	private boolean inWorld, isVisible;
 	boolean isDisposable = false;
 	public Sprite sprite;
-	float x, y;
+	float x, y, rotation;
 	ItemType type;
 	TextureRegion texture;
 	
@@ -28,8 +28,8 @@ public class Item {
 		this.type = type;
 		this.texture = texture;
 		sprite = new Sprite(texture);
-		sprite.setSize(.5f, .5f);
-		
+		sprite.setSize(.5f, .5f * sprite.getHeight() / sprite.getWidth());
+		sprite.setOriginCenter();
 		
 		if (inWorld){
 			this.x = x;
@@ -37,19 +37,24 @@ public class Item {
 		}
 	}
 
-	public void render(SpriteBatch batch, boolean isActive){
-		if (inWorld){
+	public void renderFromCharacter(SpriteBatch batch){
+		if(isVisible){
 			sprite.setPosition(x, y);
+			sprite.setRotation(rotation - 90);
 			sprite.draw(batch);
-		}else if (isActive){
+		}
+	}
+	public void render(SpriteBatch batch){
+		if (inWorld){
 			sprite.setPosition(x, y);
 			sprite.draw(batch);
 		}
 	}
 	
-	public void setPos(Vector3 pos){
+	public void setPos(Vector3 pos, float rotation){
 		x = pos.x;
 		y = pos.y;
+		this.rotation = rotation;
 	}
 	public void dropped(float x, float y){
 		sprite.setSize(.5f, .5f);
@@ -63,6 +68,12 @@ public class Item {
 	
 	public boolean isDisposable(){
 		return isDisposable;
+	}
+	public boolean isVisible(){
+		return isVisible;
+	}
+	public void setVisible(boolean visible){
+		isVisible = visible;
 	}
 	public void setButton(TextButton button){
 		this.button = button;
