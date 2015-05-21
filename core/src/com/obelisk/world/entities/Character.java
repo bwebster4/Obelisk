@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 import com.obelisk.GameMain;
 import com.obelisk.world.Map;
@@ -47,6 +48,7 @@ public abstract class Character extends ActiveEntity{
 	
 	ProfessionChart profChart;
 	
+	Group items;
 	Array<Item> inventory = new Array<Item>();
 	Array<Item> equipped = new Array<Item>();
 	/*
@@ -64,10 +66,14 @@ public abstract class Character extends ActiveEntity{
 		
 		this.itemmanager = itemmanager;
 
+		items = new Group();
+		items.setPosition(x, y);
+		
 		equipped.insert(0, null);
 		equipped.insert(1, null);
 		equipped.insert(2, null);
 		equipped.insert(3, null);
+		
 		
 		tarPos = new Vector3();
 		nextPos = new Vector3();
@@ -134,10 +140,7 @@ public abstract class Character extends ActiveEntity{
 	}
 	
 	public void renderItems(SpriteBatch batch){
-		for(int i = 0; i < equipped.size; i++){
-			if(equipped.get(i) != null)
-				equipped.get(i).renderFromCharacter(batch);
-		}
+		items.draw(batch, 1f);
 	}
 	
 	public void move(ActiveEntity entity){
@@ -232,10 +235,12 @@ public abstract class Character extends ActiveEntity{
 		body.setRotation(rotation + 90);
 		body.setPosition(getPos().x - body.getOriginX(), getPos().y - body.getOriginY());
 		
+		items.setPosition(pos.x, pos.y);
+		items.setRotation(rotation);
 		for(int i = 0; i < equipped.size; i++){
 			Item item = equipped.get(i);
 			if(item != null)
-				item.setPos(pos, rotation);
+				item.setPos(0.5f, 0, rotation);
 			
 		}
 
@@ -298,17 +303,12 @@ public abstract class Character extends ActiveEntity{
 	public void removeItem(Item item){
 		inventory.removeValue(item, true);
 	}
-
-//	public void setItemCount(boolean equipped, int index, int value){
-//		if (equipped){
-//			inventory.setValue(index, value);
-//		}
-//	}
 	
 	public void equipItem(Item item, int pos){
 		unequipItem(pos);
 		inventory.removeValue(item, true);
 		item.setVisible(true);
+		items.addActor(item);
 		equipped.insert(pos, item);
 	}
 	public void unequipItem(int pos){
@@ -317,6 +317,7 @@ public abstract class Character extends ActiveEntity{
 		if(item != null){
 			item.setVisible(false);
 			equipped.removeIndex(pos);
+			items.removeActor(item);
 			inventory.add(item);
 		}
 	}

@@ -4,10 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.obelisk.world.pathfinding.Node;
 
-public abstract class ActiveEntity {
+public abstract class ActiveEntity extends Actor{
 
 	static final float large = 1.95f, medium = .95f, small = .45f;
 	float size;

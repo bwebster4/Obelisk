@@ -3,14 +3,12 @@ package com.obelisk.world.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.obelisk.GameMain;
 import com.obelisk.InputHandler;
 import com.obelisk.world.WorldMain;
 import com.obelisk.world.entities.skills.Skill;
@@ -36,7 +34,7 @@ public class EntityManager {
 	public Array<Projectile> projectiles = new Array<Projectile>();
 	Array<ActiveEntity> unloadedentities = new Array<ActiveEntity>();
 
-	private Array<Skill> skills;
+	//private Array<Skill> skills;
 	
 	Texture character_textures;
 	TextureRegion human_1;

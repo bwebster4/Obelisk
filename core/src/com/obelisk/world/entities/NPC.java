@@ -3,10 +3,8 @@ package com.obelisk.world.entities;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
 import com.obelisk.InputHandler;
 import com.obelisk.world.items.ItemManager;
-import com.obelisk.world.physics.Collisions;
 
 public class NPC extends Character{
 	
@@ -65,7 +63,7 @@ public class NPC extends Character{
 		}
 
 		updateSprites();
-		//renderItems(batch);
+		renderItems(batch);
 		body.draw(batch);
 		
 		/*if (rotation >= 0 && rotation <= 45){

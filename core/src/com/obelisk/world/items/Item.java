@@ -1,13 +1,14 @@
 package com.obelisk.world.items;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.obelisk.world.entities.Character;
 
-public class Item {
+public class Item extends Actor {
 	
 	private boolean inWorld, isVisible;
 	boolean isDisposable = false;
@@ -17,8 +18,6 @@ public class Item {
 	TextureRegion texture;
 	
 	TextButton button;
-
-	private float range;
 		
 	public Item(ItemType type, TextureRegion texture, boolean inWorld, float x, float y){
 
@@ -29,6 +28,7 @@ public class Item {
 		this.texture = texture;
 		sprite = new Sprite(texture);
 		sprite.setSize(.5f, .5f * sprite.getHeight() / sprite.getWidth());
+		//sprite.setPosition(x, y);
 		sprite.setOriginCenter();
 		
 		if (inWorld){
@@ -36,7 +36,14 @@ public class Item {
 			this.y = y;
 		}
 	}
-
+	
+	
+	public void draw(SpriteBatch batch, float parentAlpha){
+		Gdx.app.log("Item", getName() + " Drawing");
+		sprite.setRotation(rotation - 90);
+		sprite.draw(batch);
+	}
+	
 	public void renderFromCharacter(SpriteBatch batch){
 		if(isVisible){
 			sprite.setPosition(x, y);
@@ -54,6 +61,11 @@ public class Item {
 	public void setPos(Vector3 pos, float rotation){
 		x = pos.x;
 		y = pos.y;
+		this.rotation = rotation;
+	}
+	public void setPos(float x, float y, float rotation){
+		this.x = x;
+		this.y = y;
 		this.rotation = rotation;
 	}
 	public void dropped(float x, float y){

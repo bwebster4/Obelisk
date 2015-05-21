@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.obelisk.GameMain;
 import com.obelisk.InputHandler;
 import com.obelisk.world.Ui;
 import com.obelisk.world.WorldMain;
@@ -151,7 +150,7 @@ public class Player extends Character{
 		}	
 		
 		updateSprites();
-		//renderItems(batch);
+		renderItems(batch);
 		body.draw(batch);	
 		ui.updatePlayerUi(currentHealth, inventory, equipped);
 		
