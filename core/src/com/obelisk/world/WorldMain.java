@@ -188,7 +188,7 @@ public class WorldMain implements Screen {
 		skin = new Skin(Gdx.files.internal("res/uiskin.json"));
 		loading = new Label("Loading...", skin);
 		loading.setFontScale(1.5f);
-		loading.setCenterPosition(WIDTH / 2 - loading.getWidth() / 2, HEIGHT / 2 - loading.getHeight() / 2);
+		loading.setOrigin(WIDTH / 2 - loading.getWidth() / 2, HEIGHT / 2 - loading.getHeight() / 2);
 		stage.addActor(loading);
 		
 		camera = new OrthographicCamera(1, HEIGHT/WIDTH);
