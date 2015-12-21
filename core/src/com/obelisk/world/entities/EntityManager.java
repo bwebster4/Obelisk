@@ -162,7 +162,7 @@ public class EntityManager {
 		loadedentities.add(new NPC(x, y, itemmanager, this));
 		NPC biot = (NPC) loadedentities.peek();
 		biot.show(human_1, CharacterHelper.warrior);
-		Item item = itemmanager.getNewItem(ItemType.Sword, false, 0, 0);
+		Item item = itemmanager.getNewItem(ItemType.Sword, false, x, y);
 		biot.addItem(item);
 		biot.equipItem(item, 0);
 	}

@@ -27,9 +27,9 @@ public class Item extends Actor {
 		this.type = type;
 		this.texture = texture;
 		sprite = new Sprite(texture);
-		sprite.setSize(.5f, .5f * sprite.getHeight() / sprite.getWidth());
+		sprite.setSize(type.getSize(), type.getSize() * sprite.getHeight() / sprite.getWidth());
 		//sprite.setPosition(x, y);
-		sprite.setOriginCenter();
+		sprite.setOrigin(getWidth() / 2, 0);;
 		
 		if (inWorld){
 			this.x = x;
@@ -55,6 +55,8 @@ public class Item extends Actor {
 		if (inWorld){
 			sprite.setPosition(x, y);
 			sprite.draw(batch);
+		}else{
+			renderFromCharacter(batch);
 		}
 	}
 	
@@ -69,7 +71,6 @@ public class Item extends Actor {
 		this.rotation = rotation;
 	}
 	public void dropped(float x, float y){
-		sprite.setSize(.5f, .5f);
 		inWorld = true;
 		this.x = x;
 		this.y = y;

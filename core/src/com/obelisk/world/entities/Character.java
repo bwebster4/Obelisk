@@ -44,7 +44,7 @@ public abstract class Character extends ActiveEntity{
 	protected int str, dex, con, apt, wis, cha;
 	protected int mstr, mdex, mcon, mapt, mwis, mcha;
 	
-	protected int meleeAttackBonus, rangeAttackBonus, armorClass;
+	protected int meleeAttackBonus, rangeAttackBonus, armorClass, attackTime;
 	
 	ProfessionChart profChart;
 	
@@ -105,7 +105,7 @@ public abstract class Character extends ActiveEntity{
 		armorClass = 10 + mdex;
 		meleeAttackBonus = profChart.getProfession(profession).getBAB() + mstr;
 		rangeAttackBonus = profChart.getProfession(profession).getBAB() + mdex;
-		
+		attackTime = 30 - mdex * 2;
 		currentHealth = maxHealth;
 	}
 	public void setAbilityModifiers(){
@@ -122,6 +122,7 @@ public abstract class Character extends ActiveEntity{
 		maxHealth += GameMain.rollDice(profChart.getHitDie(profession)) + mcon;
 		meleeAttackBonus = profChart.getProfession(profession).getBAB() + mstr;
 		rangeAttackBonus = profChart.getProfession(profession).getBAB() + mdex;
+		attackTime = 30 - mdex * 2;
 	}
 	
 	public void destroy(){
@@ -226,7 +227,7 @@ public abstract class Character extends ActiveEntity{
 			if(substate == repositioning)
 				anim.Walking(true);
 			else if(substate == attacking)
-				anim.Still();
+				anim.Attacking();
 			else
 				anim.Still();
 		}else
@@ -240,7 +241,7 @@ public abstract class Character extends ActiveEntity{
 		for(int i = 0; i < equipped.size; i++){
 			Item item = equipped.get(i);
 			if(item != null)
-				item.setPos(0.5f, 0, rotation);
+				item.setPos(items.getX(), items.getY(), rotation);
 			
 		}
 
@@ -248,7 +249,7 @@ public abstract class Character extends ActiveEntity{
 	
 	private int attackCounter = 0;
 	public void attack(){
-		if(attackCounter == 30 - mdex * 2){
+		if(attackCounter == attackTime){
 			int damage;
 			if(GameMain.rollDice("1d20") + meleeAttackBonus >= target.armorClass){
 				if(equipped.get(0) == null)
@@ -307,7 +308,7 @@ public abstract class Character extends ActiveEntity{
 	public void equipItem(Item item, int pos){
 		unequipItem(pos);
 		inventory.removeValue(item, true);
-		item.setVisible(true);
+		//item.setVisible(true);
 		items.addActor(item);
 		equipped.insert(pos, item);
 	}
@@ -345,34 +346,47 @@ public abstract class Character extends ActiveEntity{
 	
 // ========== Animations
 
+	private static int still = 0, walking = 1, attack = 2;
+	
 	private class Animations{
-		int counter = 0;
+		int walkCounter = 0, attackCounter = 0;
 		int changetime = 13;
-		boolean isWalking = false;
+		int state = still;
+
 		
 		public void Walking(boolean isWalking){
-			if (this.isWalking != isWalking){
-				counter = 0;
-				this.isWalking = true;
+			if (state != walking){
+				walkCounter = 0;
+				state = walking;
 			}
-			counter++;
-			if (counter < changetime)
+			walkCounter++;
+			if (walkCounter < changetime)
 				body.setRegion(t_move1);
-			else if (counter < 2 * changetime && counter >= changetime)
+			else if (walkCounter < 2 * changetime && walkCounter >= changetime)
 				body.setRegion(t_still);
-			else if (counter < 3 * changetime && counter >= changetime * 2)
+			else if (walkCounter < 3 * changetime && walkCounter >= changetime * 2)
 				body.setRegion(t_move2);
-			else if (counter < 4 * changetime && counter >= changetime * 3)
+			else if (walkCounter < 4 * changetime && walkCounter >= changetime * 3)
 				body.setRegion(t_still);
 			else
-				counter = 0;
+				walkCounter = 0;
 		}
 		public void Still(){
-			isWalking = false;
+			state = still;
 			body.setRegion(t_still);
 		}
-		public void attacking(){
-			equipped.get(0);
+		public void Attacking(){
+			state = attack;
+			body.setRegion(t_still);
+			if(attackCounter == attackTime){
+				if(equipped.get(0) != null)
+					equipped.get(0).setVisible(!equipped.get(0).isVisible());
+				attackCounter = 0;
+			}
+			else{
+				attackCounter++;
+			}
+			
 		}
 	}
 }

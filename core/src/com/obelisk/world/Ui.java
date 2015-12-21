@@ -112,7 +112,7 @@ public class Ui {
 		invMenu.add(equipment).left().row();
 		invMenu.add(invLabel).row();
 		invMenu.top().left();
-		invMenu.setDebug(true);
+		//invMenu.setDebug(true);
 		invMenu.setVisible(false);
 		
 		inventory = new VerticalGroup();

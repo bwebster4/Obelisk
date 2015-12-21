@@ -49,9 +49,6 @@ public class ItemManager {
 		worlditems.add(item);
 		return item;
 	}
-	public void addItem(Item item){
-		worlditems.add(item);
-	}
 	public void removeItem(Item item){
 		worlditems.removeValue(item, true);
 	}
