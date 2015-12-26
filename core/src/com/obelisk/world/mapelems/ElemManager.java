@@ -24,7 +24,7 @@ public class ElemManager {
 		return textures.get(name);
 	}
 	
-	public MapElem getNewElem(MapElemType type, float x, float y){
+	public MapElem getNewElem(MapElemType type, int x, int y){
 		MapElem elem = new MapElem(type, x, y, textures.get(type.getName()));
 		return elem;
 	}

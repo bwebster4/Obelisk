@@ -1,7 +1,10 @@
 package com.obelisk.world;
 
+import java.io.ByteArrayInputStream;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,6 +30,8 @@ public class WorldMain implements Screen {
 	static final int RUNNING = 1;
 	static final int PAUSED = 2;
 	static final int ENDING = 3;
+	
+	public static final int plain = 1, forest = 2, mountain = 3, lake = 4, ocean = 5, island = 6;
 	
 	// Loading Screen ==========
 	Stage stage;
@@ -56,11 +61,11 @@ public class WorldMain implements Screen {
 	InputHandler input;
 	Collisions collisions;
 	GameMain GM;
-	DiamondSquare diamondsquare;
+	FileHandle mapFile;
 	
 	public static int tic = 0;
 	
-	public WorldMain (GameMain GM, InputHandler input, float WIDTH, float HEIGHT){
+	public WorldMain (GameMain GM, InputHandler input, float WIDTH, float HEIGHT, FileHandle mapFile){
 		this.GM = GM;
 		this.WIDTH = WIDTH;
 		this.HEIGHT = HEIGHT;
@@ -72,6 +77,8 @@ public class WorldMain implements Screen {
 	@Override
 	public void render(float delta) {
 		switch(state){
+		
+		// Loading State
 		case LOADING:
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -154,6 +161,7 @@ public class WorldMain implements Screen {
 
 			break;
 			}
+			
 			// When paused do this --------------------------------
 			case PAUSED:
 			ui.render(state);
@@ -191,6 +199,7 @@ public class WorldMain implements Screen {
 		loading.setOrigin(WIDTH / 2 - loading.getWidth() / 2, HEIGHT / 2 - loading.getHeight() / 2);
 		stage.addActor(loading);
 		
+		// Camera Stuff
 		camera = new OrthographicCamera(1, HEIGHT/WIDTH);
 		viewportsize = new Vector3(camera.viewportWidth, camera.viewportHeight, 0);
 		camera.unproject(viewportsize);
@@ -217,9 +226,6 @@ public class WorldMain implements Screen {
 		cursorsprite.setColor(0, 0, 0, .5f);
 		//Gdx.input.setCursorCatched(true);
 		
-		diamondsquare = new DiamondSquare();
-		diamondsquare.show(SEED);
-		
 		map = new Map();
 		PM = new PathfindingManager();
 		map.show(input, diamondsquare, PM, SEED, itemmanager);
@@ -230,18 +236,6 @@ public class WorldMain implements Screen {
 		entitymanager = new EntityManager();
 		entitymanager.show(input, collisions, this, itemmanager, PM);
 	}
-
-//	public void addItem(Item item, Character c){
-//		itemmanager.addItem(item);
-//		c.addItem(item, false);
-//	}
-//	public void removeItem(Item item, Character c){
-//		itemmanager.removeItem(item);
-//		c.removeItem(item);
-//	}
-//	public int getTic(){
-//		return tic;
-//	}
 	
 	@Override
 	public void hide() {
@@ -283,6 +277,25 @@ public class WorldMain implements Screen {
 		}
 
 
+	}
+	
+	private class MapLoader implements Runnable{
+
+		FileHandle mapFile;
+		byte[] mapBytes;
+		ByteArrayInputStream reader;
+		public MapLoader(FileHandle mapFile){
+			this.mapFile = mapFile;
+		}
+		
+		@Override
+		public void run() {
+			
+			mapBytes = mapFile.readBytes();
+			reader = new ByteArrayInputStream(mapBytes);
+			
+		}
+		
 	}
 
 }

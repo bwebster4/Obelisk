@@ -1,152 +1,101 @@
 package com.obelisk.world;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.obelisk.InputHandler;
-import com.obelisk.world.mapelems.Block;
-import com.obelisk.world.mapelems.Stone;
 import com.obelisk.world.items.ItemManager;
-import com.obelisk.world.mapelems.GrassTile;
-import com.obelisk.world.mapelems.LightGrassTile;
-import com.obelisk.world.mapelems.Tile;
-
+import com.obelisk.world.mapelems.ElemManager;
+import com.obelisk.world.mapelems.MapElem;
+import com.obelisk.world.mapelems.MapElemType;
+import com.obelisk.world.mapelems.MapLoc;
 
 public class Chunk {
 	DiamondSquare diamondsquare;
 	InputHandler input;
-	Block block;
-	Tile tile;
-	Map map;
 	
-	float x, y;
-	float bottomleft, topleft, bottomright, topright;
+	int chunkSize;
 	
-	TextureRegion grasstiletexture;
-	float grassthreshold = 7.8f;
-	TextureRegion lightgrasstiletexture;
-	float lightgrassthreshold = 7.8f;
-	TextureRegion stonetexture;
-	float stonethreshold = 8.1f;
+	MapLoc[][] elems;
+	ElemManager elemManager;
 	
-	
+	public Chunk(int chunkSize){
+		this.chunkSize = chunkSize;
 
-	Array<Tile> tilearray = new Array<Tile>();
-	Tile[][] tiles = new Tile[Map.CHUNK_SIZE][Map.CHUNK_SIZE];
-	Array<Block> blockarray = new Array<Block>();
-	Block[][] blocks = new Block[Map.CHUNK_SIZE][Map.CHUNK_SIZE];
-	
-	public Chunk(float x, float y, float bottomleft, float topleft, float bottomright, float topright){
-		this.x = x;
-		this.y = y;
-		
-		this.bottomleft = bottomleft;
-		this.bottomright = bottomright;
-		this.topleft = topleft;
-		this.topright = topright;
+		elems = new MapLoc[chunkSize][chunkSize];
 	}
 
-	public void show(TextureRegion grasstiletexture, TextureRegion lightgrasstiletexture, TextureRegion stonetexture, DiamondSquare diamondsquare, InputHandler input, Map map, ItemManager itemmanager){
-		this.grasstiletexture = grasstiletexture;
-		this.lightgrasstiletexture = lightgrasstiletexture;
-		this.stonetexture = stonetexture;
-		this.input = input;
-		this.map = map;
+	public void show(int chunkX, int chunkY, ItemManager itemManager, ElemManager elemManager, FileHandle saveFile){
+		this.elemManager = elemManager;
 		
-		diamondsquare.generateTileHeights(bottomleft, bottomright, topleft, topright);
-		float heights[][] = diamondsquare.getHeights();
-		for (int row = 0; row < Map.CHUNK_SIZE; row++){
-			for (int col = 0; col < Map.CHUNK_SIZE; col++){
-				if (heights[row][col] < grassthreshold){
-					tilearray.add(new GrassTile(row * 1f + getX(), col * 1f + getY(), grasstiletexture));
-					tiles[row][col] = tilearray.peek();
-				}else if (heights[row][col] >= grassthreshold){
-					tilearray.add(new LightGrassTile(row * 1f + getX(), col * 1f+  getY(), lightgrasstiletexture));
-					tiles[row][col] = tilearray.peek();
-				}
-				if (heights[row][col] >= stonethreshold){
-					blockarray.add(new Stone(row *1f + getX(), col *1f + getY(), stonetexture, input, itemmanager));
-					blocks[row][col] = blockarray.peek();
-				}
-			}	
-		}
-	}
-	public void render(SpriteBatch batch, Vector3 touchpos, int brightness){
-		for (int i = 0; i < tilearray.size; i++){
-			tile = tilearray.get(i);
-			tile.render(batch);
-		}
-		for (int i = 0; i < blockarray.size; i++){
-			block = blockarray.get(i);
-			block.render(batch);
-			if (block.getAlive() == false){
-				blockarray.removeIndex(i);
-			}
-		}
-		for (int x = 0; x < Map.CHUNK_SIZE; x++){
-			for (int y = 0; y < Map.CHUNK_SIZE; y++){
-				//tiles[x][y].render(batch);
-				if (blocks[x][y] != null){
-					//blocks[x][y].render(batch, touchpos);
-					if (blocks[x][y].getAlive() == false){
-						map.updateWalkable(this.x + x,this.y + y, true);
-						blocks[x][y] = null;
-					}
-				}
-
+		byte[] saveData = saveFile.readBytes();
+		
+				
+		for(int x =  0; x < chunkSize; x++){
+			for(int y = 0; y < chunkSize; y++){
+				elems[x][y] = new MapLoc();
+				elems[x][y].show(itemManager);
+				elems[x][y].addElem(elemManager.getNewElem(MapElemType.Grass, chunkX + x, chunkY + y));
+				elems[x][y].addElem(elemManager.getNewElem(MapElemType.Shader, chunkX + x, chunkY + y));
 			}
 		}
 	}
-	public void drawShader(SpriteBatch batch){
-		for (int i = 0; i < tilearray.size; i++){
-			tile = tilearray.get(i);
-//			tile.drawShader(batch);
+	public void render(SpriteBatch batch, Vector3 touchpos){
+		for(int x =  0; x < chunkSize; x++){
+			for(int y = 0; y < chunkSize; y++){
+				elems[x][y].renderTiles(batch);
+			}
+		}
+		for(int x =  0; x < chunkSize; x++){
+			for(int y = 0; y < chunkSize; y++){
+				elems[x][y].renderBlocks(batch);
+			}
+		}
+	}
+	public FileHandle save(String directory, ByteArrayOutputStream writer, int number){
+		byte[] saveData = new byte[0];
+		writer.reset();
+		for(int x = 0; x < chunkSize; x++){
+			for(int y = 0; y < chunkSize; y++){
+				elems[x][y].save(writer);
+				saveData = concatByte(saveData, elems[x][y].save(writer));
+			}
+		}
+		FileHandle chunkFile = Gdx.files.local(directory + "/chunk" + Integer.toString(number) + ".bin");
+		chunkFile.writeBytes(saveData, false);
+		return chunkFile;
+	}
+	private byte[] concatByte(byte[] a, byte[] b){
+		byte[] c = Arrays.copyOf(a, a.length + b.length);
+		System.arraycopy(b, 0, c, a.length, b.length);
+		return c;
+		
+	}
+	public boolean addElem(MapElem elem, int x, int y){
+		return elems[x][y].addElem(elem);
+	}
+	
+	public void renderShaders(SpriteBatch batch, int brightness){
+		for(int x =  0; x < chunkSize; x++){
+			for(int y = 0; y < chunkSize; y++){
+				elems[x][y].renderShaders(batch, brightness);
+			}
+		}
+	}
+	
 
-		}
-	}
-	public Block getBlock(float x, float y){
-		return blocks[(int) x][(int) y];
-	}
-	public Tile getTile(float x, float y){
-		return tiles[(int) x][(int) y];
-	}
-	public Array<Block> getBlockArray(){
-		return blockarray;
-	}
-	public boolean addBlock(Block block, int x, int y){
-		if (blocks[(int) x][(int) y] == null){
-			blockarray.add(block);
-			blocks[(int) x][(int) y] = block;
-			System.out.println(block + " added at " + x + " " + y);
-			map.updateWalkable(this.x + x,this.y + y, false);
-			return true;
-		}else{
-			System.out.println("Block cannot be added: space filled");
-			return false;
-		}
-	}
-	
-	public float getX(){
-		return x;
-	}
-	public float getY(){
-		return y;
+	public boolean getWalkable(int x, int y){
+		return elems[x][y].getWalkable();
 	}
 	
 	
-	public float getBottomLeft(){
-		return bottomleft;
-	}
-	public float getTopLeft(){
-		return topleft;
-	}
-	public float getBottomRight(){
-		return bottomright;
-	}
-	public float getTopRight(){
-		return topright;
-	}
 	public int atEdgeX(float x){
 		if (x < 1)
 			return 0;

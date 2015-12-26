@@ -1,5 +1,9 @@
 package com.obelisk.world.mapelems;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.obelisk.world.items.ItemManager;
@@ -7,17 +11,38 @@ import com.obelisk.world.items.ItemManager;
 public class MapLoc {
 
 	int x, y;
-	int plate, region;
 	Array<MapElem> data = new Array<MapElem>();
 	ItemManager itemManager;
 	
-	public MapLoc(int x, int y, int plate, int region, ItemManager itemManager){
-		this.x = x;
-		this.y = y;
-		this.plate = plate;
-		this.region = region;
+	public void show(ItemManager itemManager, byte[] saveData, ByteArrayInputStream reader){
 		this.itemManager = itemManager;
+		
+		reader.read();
 	}
+	public byte[] save(ByteArrayOutputStream writer) {
+		byte[] byteData;
+		
+		writer.write(x);
+		writer.write(y);
+		for(int i = 0; i < data.size; i++){
+			try {
+				writer.write(data.get(i).getType().getName().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			writer.write("%".getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byteData = writer.toByteArray();
+		writer.reset();
+		return byteData;
+	}
+	
 	public void renderTiles(SpriteBatch batch){
 		for(int i = 0; i < data.size; i++){
 			if(data.get(i).getSuperType() == MapElem.tile){
@@ -46,13 +71,21 @@ public class MapLoc {
 		}
 	}
 	
-	public void addElem(MapElem elem){
+	public boolean addElem(MapElem elem){
+		for(int i = 0; i < data.size; i++){
+			if(data.get(i).getSuperType() == MapElem.block){
+				System.out.println("Block cannot be added: space filled");
+				return false;
+			}
+		}
 		data.add(elem);
+		return true;
 	}
-	public void setPlate(int plate){
-		this.plate = plate;
-	}
-	public int getPlate(){
-		return plate;
+	public boolean getWalkable(){
+		for(int i = 0; i < data.size; i++){
+			if(!data.get(i).getType().isWalkable())
+				return false;
+		}
+		return true;
 	}
 }

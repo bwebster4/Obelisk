@@ -18,9 +18,9 @@ public class MapElem {
 	int life;
 	int brightness, highestlight = 1;
 	
-	public MapElem(MapElemType type, float x, float y, TextureRegion texture){
-		this.x = (int) x;
-		this.y = (int) y;
+	public MapElem(MapElemType type, int x, int y, TextureRegion texture){
+		this.x = x;
+		this.y = y;
 		this.texture = texture;
 		this.type = type;
 		life = type.getHealth();

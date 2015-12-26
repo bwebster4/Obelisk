@@ -1,6 +1,10 @@
 package com.obelisk.world;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,81 +12,59 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.obelisk.InputHandler;
-import com.obelisk.world.mapelems.Block;
-import com.obelisk.world.mapelems.Stone;
 import com.obelisk.world.items.ItemManager;
-import com.obelisk.world.mapelems.Tile;
+import com.obelisk.world.mapelems.ElemManager;
 import com.obelisk.world.pathfinding.FloodFill;
 import com.obelisk.world.pathfinding.Node;
 import com.obelisk.world.pathfinding.PathfindingManager;
 
 
 public class Map {
-
-	float grassthreshold = 7.8f;
-	float lightgrassthreshold = 7.8f;
-	float stonethreshold = 20f;//8.1f;
-
-	TextureAtlas mapElems;
-	TextureRegion grassTexture, lightGrassTexture, stoneTexture;
 	
-	Tile tile;
-	Block block;
 	Chunk chunk;
 	InputHandler input;
-	ItemManager itemmanager;
+	ItemManager itemManager;
 	PathfindingManager PM;
 	FloodFill floodfill;
+	ElemManager elemManager;
 	
 	Thread areaGen;
 	boolean isGenerating = true;
 	
 	public static final int CHUNK_SIZE = 16;
-	public static final int WORLD_CHUNKS = 16;
-	public static final int WORLD_SIZE = CHUNK_SIZE * WORLD_CHUNKS;
+	int worldSize, halfWorldSize;
 	
 	int time = 17000;
 	int maxtime = 86400;
 	int maxbrightness = 20;
 	int ambientlight = 7;
 	
-	Array<Chunk> chunkarray = new Array<Chunk>();
-	Chunk[][] chunks = new Chunk[WORLD_CHUNKS][WORLD_CHUNKS];
-	Boolean[][] walkable = new Boolean[WORLD_SIZE][WORLD_SIZE];
+	Chunk[][] chunks;
 	
 	Array<Area> areas = new Array<Area>();
 	
-	public void show(InputHandler input, DiamondSquare diamondsquare, PathfindingManager PM, float SEED, ItemManager itemmanager){
+	public void show(FileHandle mainDir, InputHandler input, PathfindingManager PM, ItemManager itemManager){
 		this.input = input;
-		this.itemmanager = itemmanager;
+		this.itemManager = itemManager;
 		this.PM = PM;
-		
-		mapElems = new TextureAtlas("res/mapelems.txt");
-		
-		grassTexture = mapElems.findRegion("GrassTile");
-		lightGrassTexture = mapElems.findRegion("LightGrassTile");
-		stoneTexture = mapElems.findRegion("Block");
+		elemManager = new ElemManager();
 		
 		
-		//====== Generating Land
-		diamondsquare.generateChunkHeights();
-		float chunkheights[][] = diamondsquare.heights;
-		for (int x = 0; x < WORLD_CHUNKS; x++){
-			for (int y = 0; y < WORLD_CHUNKS; y++){
-				chunkarray.add(new Chunk(x * 1f * CHUNK_SIZE, y * 1f * CHUNK_SIZE, chunkheights[x][y], chunkheights[x][y+1], chunkheights[x+1][y], chunkheights[x+1][y+1]));
-				chunks[x][y] = chunkarray.peek();	
-				chunks[x][y].show(grassTexture, lightGrassTexture, stoneTexture, diamondsquare, input, this, itemmanager);
-				System.out.println("Chunk " + chunkarray.size + " created");
-			}
-		}
-
-		//====== Determining Walkability
-		for (int x = 0; x < WORLD_SIZE; x++){
-			for (int y = 0; y < WORLD_SIZE; y++){
-				if (getBlock(x, y) == null && getTile(x, y).isWalkable())
-					walkable[x][y] = true;
-				else 
-					walkable[x][y] = false;
+		FileHandle folder = mainDir.child("World");
+		FileHandle worldSettings = folder.child("WorldSettings.bin");
+		ByteArrayInputStream reader = new ByteArrayInputStream(worldSettings.readBytes());
+		worldSize = reader.read() + 1;
+		halfWorldSize = worldSize / 2;
+		reader.reset();
+		
+		int chunkNumber = 0;
+		chunks = new Chunk[worldSize][halfWorldSize];
+		//====== Loading Land
+		for (int x = 0; x < worldSize; x++){
+			for (int y = 0; y < halfWorldSize; y++){
+				
+				chunks[x][y] = 	new Chunk(CHUNK_SIZE);
+				chunks[x][y].show(x, y, itemManager, elemManager);
 			}
 		}
 
@@ -91,6 +73,26 @@ public class Map {
 		
 
 	}
+	public FileHandle save(String name, ByteArrayOutputStream writer){
+		
+		String directory = name + "/World";
+		FileHandle folder = Gdx.files.local(directory);
+		FileHandle worldSettings = Gdx.files.local(directory + "/WorldSettings");
+		writer.write(worldSize - 1);
+		worldSettings.writeBytes(writer.toByteArray(), false);
+		writer.reset();
+		int number = 0;
+		for(int x = 0; x < worldSize; x++){
+			for(int y = 0; y < worldSize / 2; y++){
+				chunks[x][y].save(directory, writer, number);
+				number++;
+			}
+		}
+
+		return folder;
+		
+	}
+	
 	public void render(SpriteBatch batch, Vector3 touchpos, Rectangle camrect){
 		time+= 1;
 		if(time >= maxtime)
@@ -132,20 +134,10 @@ public class Map {
 			}
 		}
 	}
-	public boolean getWalkable(float x, float y){
-		if (x > 0 && y > 0 && x < WORLD_SIZE && y < WORLD_SIZE)
-			return walkable[(int) x][(int) y];
-		else return false;
+	public boolean getWalkable(int x, int y){
+		return chunks[x/CHUNK_SIZE][y/CHUNK_SIZE].getWalkable(x, y);
 	}
-	public void updateWalkable(float x, float y, boolean iswalkable){
-		walkable[(int) x][(int) y] = iswalkable;
-		
-		if (iswalkable == true){
-			addtoArea(x, y);
-		}else{
-			getTile(x, y).setArea(0);
-		}
-	}
+
 	public Block getBlock(float x, float y){
 		return chunks[(int) (x/CHUNK_SIZE)][(int) (y/CHUNK_SIZE)].getBlock(x%CHUNK_SIZE, y%CHUNK_SIZE);
 	}
@@ -166,17 +158,7 @@ public class Map {
 		}
 
 	}
-	public boolean addBlock(int id, int x, int y){
-		Block block;
-//		switch(id){
-//		case 1:
-			block = new Stone(x, y, stoneTexture, input, itemmanager);
 
-//		default:
-//			block = null;
-//		}
-		return chunks[(int) (x / CHUNK_SIZE)][(int) (y / CHUNK_SIZE)].addBlock(block, x%CHUNK_SIZE, y%CHUNK_SIZE);
-	}
 	public void addLight(int brightness, Vector3 pos){
 		
 		Array<Node> litarea = floodfill.FloodLtd4(pos, brightness - ambientlight);

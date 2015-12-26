@@ -2,13 +2,17 @@ package com.obelisk;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.MathUtils;
 import com.obelisk.startmenu.StartScreen;
+import com.obelisk.world.MapGen;
 import com.obelisk.world.WorldMain;
+import com.obelisk.world.mapelems.MapLoc;
 
 public class GameMain extends Game {
 	public WorldMain planetscreen;
 	public StartScreen startscreen;
+	MapGen mapGen;
 	InputHandler input;
 	
 	boolean setup = false;
@@ -24,6 +28,8 @@ public class GameMain extends Game {
 		
 		input = new InputHandler(WIDTH, HEIGHT);
 		running = true;
+		
+		mapGen = new MapGen();
 		
 		startscreen = new StartScreen(this);
 		setScreen(startscreen);
@@ -90,12 +96,14 @@ public class GameMain extends Game {
 	public void resume() {
 	}
 	
-	public void startGame(){
-		planetscreen = new WorldMain(this, input, WIDTH, HEIGHT);
+	public void startGame(FileHandle map){
+		planetscreen = new WorldMain(this, input, WIDTH, HEIGHT, map);
 		setScreen(planetscreen);
 		setup = true;
 	}
-	
+	public void createWorld(int size, int plates){
+		mapGen.generateMap("Saves/NewWorld.bin", MapGen.SMALL, 4);
+	}
 	// ====== Game Time Counters
 	
 	static boolean isSec = false;

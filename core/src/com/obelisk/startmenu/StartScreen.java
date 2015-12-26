@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.obelisk.GameMain;
+import com.obelisk.world.MapGen;
 
 public class StartScreen implements Screen{
 
@@ -15,7 +16,7 @@ public class StartScreen implements Screen{
 	Skin skin;
 	Stage stage;
 	Table menu;
-	TextButton newWorld, exit;
+	TextButton newWorld, play, exit;
 	
 	public StartScreen(GameMain GM){
 		this.GM = GM;
@@ -49,6 +50,10 @@ public class StartScreen implements Screen{
 		newWorld = new TextButton("New World", skin);
 		newWorld.addAction(new NewWorldAction(newWorld));
 		menu.add(newWorld).pad(20).size(100, 50).row();
+		
+		play = new TextButton("play", skin);
+		play.addAction(new PlayAction(play));
+		menu.add(play).pad(20).size(100, 50).row();
 		
 		exit = new TextButton("Quit", skin);
 		exit.addAction(new ExitAction(exit));
@@ -85,6 +90,19 @@ public class StartScreen implements Screen{
 		TextButton button;
 		
 		public NewWorldAction(TextButton button){
+			this.button = button;
+		}
+		@Override
+		public boolean act(float delta) {
+			if (button.isPressed())
+				GM.createWorld(MapGen.SMALL, 4);
+			return false;
+		}
+	}
+	private class PlayAction extends Action{
+		TextButton button;
+		
+		public PlayAction(TextButton button){
 			this.button = button;
 		}
 		@Override
